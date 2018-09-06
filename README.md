@@ -31,11 +31,8 @@ the force will be applied by manipulating the boolean command:
 ```
 
 ### Real robot
-Bring up the kuka-lwr-ros controller: 
+Bring up the kuka-lwr-ros controller and console in different terminals: 
 ```
 $ roslaunch lwr_simple_example real.launch
-```
-and console
-```
 $ roslaunch lwr_fri lwr_fri_console.launch
 ```

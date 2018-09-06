@@ -1,10 +1,10 @@
 # kuka-lpvds-compliant
+This package implements the LPV-DS motion generator from Nadia's CoRL (2018) paper together with the passive-DS controller for the KUKA LWR 4+ robot in simulation (gazebo) and real scenarios. 
+
+### DEPENDENCIES
 
 
-## DEPENDENCIES
-
-
-## SIMULATION
+### SIMULATION
 
 ```
 $ roslaunch lwr_simple_example sim.launch force-interface:=true
@@ -18,4 +18,4 @@ the force will be applied by manipulating the boolean command:
 /lwr/joint_controllers/passive_ds_apply_force
 ```
 
-## On REAL ROBOT
+### ON REAL ROBOT

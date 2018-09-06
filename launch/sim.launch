@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<launch>
+
+	<!-- SIMULATION LAUNCH FILE  "Simple example" -->
+ 	<arg name="force-interface"   default="false"/>
+
+  	<include file="$(find lwr_launch)/launch/simulation.launch">
+    		<arg name="rviz_config"       value="$(find lwr_simple_example)/launch/rviz/rviz_config.rviz"/>
+ 		    <arg name="t1_limits" 	      value="false"/>
+ 	</include>
+
+	<node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>
+
+	<group if="$(arg force-interface)">	
+	   <param name="slider-file"  value="$(find lwr_launch)/rqt_cfg/External-force-rqt.yaml"/>
+	   <node name="rqt_ez_publisher" pkg="rqt_ez_publisher" type="rqt_ez_publisher" output="screen" />		
+	</group>
+
+</launch>

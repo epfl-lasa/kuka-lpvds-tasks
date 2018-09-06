@@ -9,9 +9,9 @@ To run this package you must install the following dependencies:
 ### Simulation
 Bring up the kuka-lwr-ros controller and simulator:
 ```
-$ roslaunch lwr_simple_example sim.launch force-interface:=true
+$ roslaunch kuka_lpvds_compliant sim.launch force-interface:=true
 ```
-To apply external forces during the execution of the passive-DS controller you can define the force in the following topicL
+To apply external forces during the execution of the passive-DS controller you can define the force in the following topic:
 ```
 /lwr/joint_controllers/passive_ds_external_force
 ```

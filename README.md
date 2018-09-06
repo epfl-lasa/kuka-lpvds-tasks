@@ -17,7 +17,7 @@ $ roslaunch kuka_lpvds_compliant sim.launch force-interface:=true
 $ roslaunch lwr_simple_example client.launch
 $ roslaunch lwr_simple_example console.launch
 ```
-3. Load DS motion generator (TODO: Change to LPV-DS):
+3. Load DS motion generator **(TODO: Change to LPV-DS)**:
 ```
 $ roslaunch ds_motion_generator load_DS_motionGenerator.launch
 ```

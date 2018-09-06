@@ -11,22 +11,17 @@ To run this package you must install the following dependencies:
 ```
 $ roslaunch kuka_lpvds_compliant sim.launch force-interface:=true
 ```
-
 2. Run kuka-planning-interface to send joint/grav-comp commands:
 
 ```
-roslaunch lwr_simple_example client.launch
-```
-and
-```
-roslaunch lwr_simple_example console.launch
+$ roslaunch lwr_simple_example client.launch
+$ roslaunch lwr_simple_example console.launch
 ```
 3. Load DS motion generator:
 ```
 roslaunch ds_motion_generator load_DS_motionGenerator.launch
 ```
-
-To apply external forces during the execution of the passive-DS controller you can define the force in the following topic:
+4. To apply external forces during the execution of the passive-DS controller you can define the force in the following topic:
 ```
 /lwr/joint_controllers/passive_ds_external_force
 ```

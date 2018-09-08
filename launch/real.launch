@@ -8,4 +8,7 @@
 		<arg name="load-rviz"	      value="true"/>
         </include>
 
+    # Load rqt_reconfigure app    
+	<node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure"/>
+
 </launch>

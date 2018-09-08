@@ -1,5 +1,7 @@
 # kuka-lpvds-compliant
-This package implements the LPV-DS motion generator from Nadia's CoRL (2018) paper together with the passive-DS controller for the KUKA LWR 4+ robot in simulation (gazebo) and real scenarios. 
+This package implements the LPV-DS motion generator from [1] paper together with the passive-DS controller for the KUKA LWR 4+ robot in simulation (gazebo) and real scenarios. 
+
+[1] Figueroa, N. and Billard, A. (2018) "A Physically-Consistent Bayesian Non-Parametric Mixture Model for Dynamical System Learning". Conference on Robot Learning (CoRL) - 2018 Edition. Accepted. 
 
 ### Dependencies
 To run this package you must install the following dependencies:

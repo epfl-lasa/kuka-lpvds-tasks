@@ -17,7 +17,7 @@ $ roslaunch kuka_lpvds_compliant planning_client.launch
 $ roslaunch kuka_lpvds_compliant planning_console.launch
 ```
 Default commands (go_home, go_left, go_right, go_candle)
-These commands are use to send the robot to a "good" initial joint configuration, generally you should 'go_home' or 'go_right' to test a ds-motion generator.
+These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a ds-motion generator.
 
 3. Load DS motion generator **(TODO: Change to LPV-DS)**:
 ```
@@ -44,7 +44,7 @@ $ roslaunch kuka_lpvds_compliant planning_client.launch
 $ roslaunch kuka_lpvds_compliant planning_console.launch
 ```
 Default commands (go_home, go_left, go_right, go_candle)
-These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a ds-motion generator. If the robot is currentlt in a weird, near collision configuration ```go_candle``` first.
+These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a ds-motion generator. If the robot is currently in a weird, near collision configuration ```go_candle``` first.
 
 3. ...
 

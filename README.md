@@ -1,5 +1,11 @@
-# kuka-lpvds-compliant
-This package implements the LPV-DS motion generator from [1] paper together with the passive-DS controller for the KUKA LWR 4+ robot in simulation (gazebo) and real scenarios. 
+# kuka-lpvds-tasks
+This package implements the LPV-DS motion generator from [1] together with the passive-DS controller for the KUKA LWR 4+ robot in both simulation (gazebo) and with the real robot for the following scenarios:
+
+- Scenario 1: Production Line
+- Scenario 2: Inspection Line
+- Scenario 3: Shelf-Arranging top and bottom
+- Scenario 4: Cube Picking
+- Scenario 5: Bumpy Surface Drawing
 
 ### Dependencies
 To run this package you must install the following dependencies:

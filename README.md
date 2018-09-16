@@ -4,8 +4,8 @@ This package implements the LPV-DS motion generator from [1] together with the p
 - Scenario 1: Production Line
 - Scenario 2: Inspection Line
 - Scenario 3: Shelf-Arranging top and bottom
-- Scenario 4: Cube Picking
-- Scenario 5: Bumpy Surface Drawing
+- Scenario 4: Cube Gathering **(TODO)**
+- Scenario 5: Bumpy Surface Drawing **(TODO)**
 
 ### Dependencies
 To run this package you must install the following dependencies:

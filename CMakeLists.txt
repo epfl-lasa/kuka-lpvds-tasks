@@ -9,6 +9,7 @@ find_package(catkin REQUIRED
     tf
     roscpp
     std_msgs
+    grasp_interface
 )
 
 set(CMAKE_CXX_FLAGS "-O2 -O3 -std=c++11 -mtune=native -fPIC -Wall -Wno-deprecated-declarations")

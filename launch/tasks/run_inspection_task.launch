@@ -12,7 +12,7 @@
 	    <param name="output_filtered_topic_name"        value="/ds1/desired_velocity_filtered"/>
 	    <param name="publish_DS_path"                   value="false"/>
 	    <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/seDS/Curve_go_right.yml"/>
-	    <node name="ds_node" pkg="ds_motion_generator"  type="seDS_motionGenerator_node" output="screen"/>
+	    <node name="ds_node" pkg="ds_motion_generator"  type="seDS_motionGenerator_node" />
 	</group>
 
 	<group if="$(arg viz_DS_path)">
@@ -22,7 +22,7 @@
 	      <param name="output_filtered_topic_name"        value=""/>    
 	      <param name="publish_DS_path"                   value="true"/>
 	      <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/seDS/Curve_go_right.yml"/>
-	      <node name="ds_node" pkg="ds_motion_generator"  type="seDS_motionGenerator_node" output="screen"/>
+	      <node name="ds_node" pkg="ds_motion_generator"  type="seDS_motionGenerator_node" />
 	  </group>
 	</group>
 
@@ -34,7 +34,7 @@
 	    <param name="output_filtered_topic_name"        value="/ds2/desired_velocity_filtered"/>
 	    <param name="publish_DS_path"                   value="false"/>
 	    <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/sink-pqlf.yml"/>
-	    <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" output="screen"/>
+	    <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" />
 	</group>
 
 	<group if="$(arg viz_DS_path)">
@@ -44,18 +44,19 @@
 	      <param name="output_filtered_topic_name"        value=""/>    
 	      <param name="publish_DS_path"                   value="true"/>
 	      <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/sink-pqlf.yml"/>
-	      <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" output="screen"/>
+	      <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" />
 	  </group>
 	</group>
 
 
 	# Load Motion Planning node for Sink Task
-	<group ns="active_ds">
+	<group>
 		  <param name="input_pose_topic_name"              value="/lwr/ee_pose"/>
 		  <param name="input_ds1_topic_name"               value="/ds1/desired_velocity_filtered"/>
 		  <param name="input_ds2_topic_name"               value="/ds2/desired_velocity_filtered"/>
 	      <param name="output_vel_topic_name"              value="/lwr/joint_controllers/passive_ds_command_vel"/>
 	      <param name="motion_phase_name"                  value="$(arg motion_phase)"/>
+	      <rosparam command="load" file="$(find kuka_lpvds_tasks)/config/sinkTask.yml"/>
 		  <node name="sinkTask_motionPlanner_node" pkg="kuka_lpvds_tasks"  type="sinkTask_motionPlanner_node" output="screen"/>
 	</group>
 	

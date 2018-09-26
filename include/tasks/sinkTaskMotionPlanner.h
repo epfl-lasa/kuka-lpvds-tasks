@@ -8,8 +8,7 @@
 #include <string>
 #include "eigen3/Eigen/Dense"
 
-
-// #include <grasp_interface/rs_gripper_interface.h>
+#include <grasp_interface/rs_gripper_interface.h>
 
 using namespace Eigen;
 
@@ -32,7 +31,7 @@ private:
     ros::NodeHandle           nh_;
     ros::Rate                 loop_rate_;    
 
-    // Publishers/Subscriber    
+    // Publishers/Subscriber/Service Calls
     ros::Subscriber           sub_real_pose_;
     ros::Subscriber           sub_ds1_twist_;
     ros::Subscriber           sub_ds2_twist_;
@@ -53,16 +52,27 @@ private:
 
 
 	// Class variables
-	std::mutex mutex_;
-    VectorXd                   *ds1_targets;
-    VectorXd                    ds2_target;
-    VectorXd                    real_pose_;
-    VectorXd                    ds1_velocity_;
-    VectorXd                    ds2_velocity_;
-    VectorXd                    desired_velocity_;
+    std::mutex                mutex_;
+    VectorXd                  ds1_target;
+    VectorXd                  ds2_target;
+    VectorXd                  real_pose_;
+    VectorXd                  ds1_velocity_;
+    VectorXd                  ds2_velocity_;
+    VectorXd                  desired_velocity_;
+    std::vector<double>       attractor_pick_;
+    std::vector<double>       attractor_sink_;
+    VectorXd                  target_pick_;
+    VectorXd                  target_sink_;
+    bool                      bFirst_;
+    bool                      bEnd_;
+    int                       num_picks_;
+    int                       picks_;
+    double                    thres_;
 
     // Gripper Controller
-    // std::unique_ptr<RSGripperInterface> gripper_;
+//    std::unique_ptr<RSGripperInterface> gripper_;
+    RSGripperInterface*        gripper_;
+
 
 public:
 	sinkTaskMotionPlanner(ros::NodeHandle &n,
@@ -71,7 +81,9 @@ public:
                       std::string input_ds1_topic_name,
                       std::string input_ds2_topic_name,
                       std::string output_vel_topic_name,
-                      std::string motion_phase_name);
+                      std::string motion_phase_name,
+                      std::vector<double> &attractor_pick,
+                      std::vector<double> &attractor_sink);
 
     ~sinkTaskMotionPlanner(void);
 

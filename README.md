@@ -1,10 +1,16 @@
-# kuka-lpvds-compliant
-This package implements the LPV-DS motion generator from Nadia's CoRL (2018) paper together with the passive-DS controller for the KUKA LWR 4+ robot in simulation (gazebo) and real scenarios. 
+# kuka-lpvds-tasks
+This package implements the LPV-DS motion generator from [1] together with the passive-DS controller for the KUKA LWR 4+ robot in both simulation (gazebo) and with the real robot for the following tasks **learned from demonstration**:
+
+- Task 1: Inspection Line
+- Task 2: Production Line
+- Task 3: Shelf-Arranging (top and bottom)
 
 ### Dependencies
 To run this package you must install the following dependencies:
-- [kuka-lwr-ros](https://github.com/epfl-lasa/kuka-lwr-ros.git) checkout 'nadia' branch
-- [ds-motion-generator](https://github.com/epfl-lasa/ds_motion_generator.git) checkout 'nadia' branch
+- [kuka-lwr-ros](https://github.com/epfl-lasa/kuka-lwr-ros.git) ``checkout 'nadia' branch`` | Control Interface for Kuka LWR 4+
+- [ds-motion-generator](https://github.com/epfl-lasa/ds_motion_generator.git) ``checkout 'nadia' branch`` | DS motion generation nodes
+- [lpvDS-lib](https://github.com/nbfigueroa/lpvDS-lib) | lpv-DS class used by ds-motion-generator
+- [grasp-interface](https://github.com/epfl-lasa/grasp_interface) | To control the Robotiq S gripper from code 
 
 ### Simulation
 1. Bring up the kuka-lwr-ros controller and simulator:
@@ -17,7 +23,7 @@ $ roslaunch kuka_lpvds_compliant planning_client.launch
 $ roslaunch kuka_lpvds_compliant planning_console.launch
 ```
 Default commands (go_home, go_left, go_right, go_candle)
-These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a ds-motion generator.
+These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a learned ds-motion generator.
 
 3. Load DS motion generator **(TODO: Change to LPV-DS)**:
 ```
@@ -35,7 +41,7 @@ the force will be applied by manipulating the boolean command:
 ### Real robot
 1. Bring up the kuka-lwr-ros controller and console in different terminals: 
 ```
-$ roslaunch roslaunch kuka_lpvds_compliant real.launch
+$ roslaunch lwr_simple_example real.launch
 $ roslaunch lwr_fri lwr_fri_console.launch
 ```
 2. Run the planning-interface to send joint commands:
@@ -48,3 +54,6 @@ These commands are use to send the robot to a "good" initial joint configuration
 
 3. ...
 
+
+### Reference
+[1] Figueroa, N. and Billard, A. (2018) "A Physically-Consistent Bayesian Non-Parametric Mixture Model for Dynamical System Learning". Conference on Robot Learning (CoRL) - 2018 Edition. To Appear. 

@@ -74,22 +74,33 @@ int main(int argc, char** argv)
       std::array<double,7> des_position;
     
       ac::Joint_action joint_go_right(nh);      
-      des_position  =  {{-0.5132, 0.6228, -0.342, -1.1344, 0.2649, 1.369, 0.4573}};
+      // des_position  =  {{-0.308, 0.749, -0.658, -1.118, 0.475, 1.382, 0.559}};
+      // des_position  =  {{-1.0641, 0.8109, 0.8423, -1.2189, -0.6116, 1.3073, -0.233}};
+      des_position  =  {{-0.838, 0.614, 0.388, -1.072, -0.1988, 1.478, -0.606}};
       joint_go_right.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_right.debug_print = true;
       actions["go_right"] = &joint_go_right;
       
-      ac::Joint_action joint_go_left(nh);      
-      des_position  =  {{0.6384, 0.7791, -0.000103, -0.9249, -0.1288, 1.3475, 2.252}};
+      ac::Joint_action joint_go_left(nh);   
+      // des_position  =  {{0.858, 0.819, -0.476, -0.7953, 0.2931, 1.528, 0.512}};   
+      // des_position  =  {{0.96716, 0.899, -0.7492, -0.849, 0.502, 1.484, 1.9653}};
+      des_position  =  {{0.52, 0.802, 0.292, -0.826, -0.289, 1.457, 0.7755}};
       joint_go_left.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_left.debug_print = true;
       actions["go_left"]        = &joint_go_left;  
       
       ac::Joint_action joint_go_home(nh);
-      des_position  =  {{0.0919, 0.2396, -0.0671, -1.5284, 0.0244, 1.347, 1.663}};
+      // des_position  =  {{0.529, 0.243, -0.4973, -1.3239, 0.0973, 1.5216, 0.0611}};
+      des_position  =  {{-0.102, 0.226, 0.14, -1.456, -0.025, 1.407, -0.001}};
       joint_go_home.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_home.debug_print = true;
       actions["go_home"]        = &joint_go_home;
+
+      ac::Joint_action joint_go_nullspace(nh);
+      des_position  =  {{-0.0045, 0.7503, -0.0598, -1.652, 0.0603, 0.7602, 1.538}};
+      joint_go_nullspace.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
+      joint_go_nullspace.debug_print = true;
+      actions["go_nullspace"]        = &joint_go_nullspace;
 
       ac::Joint_action go_candle(nh);
       des_position  =  {{0,0,0,0,0,0,0}};

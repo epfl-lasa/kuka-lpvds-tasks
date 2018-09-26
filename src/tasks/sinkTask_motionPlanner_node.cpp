@@ -15,6 +15,7 @@ int main(int argc, char **argv)
   std::string input_ds1_topic_name;
   std::string input_ds2_topic_name;
   std::string output_vel_topic_name;
+  std::string motion_phase_name;
   
 
   if (!nh.getParam("input_pose_topic_name", input_pose_topic_name))   {
@@ -37,12 +38,18 @@ int main(int argc, char **argv)
     // return -1;
   }
 
+  if (!nh.getParam("motion_phase_name", motion_phase_name))   {
+    ROS_ERROR("Couldn't retrieve the topic name for the output. ");
+    // return -1;
+  }
+
 
   sinkTaskMotionPlanner sinkTask_MotionPlanner_(nh, frequency,
                                          input_pose_topic_name,
                                          input_ds1_topic_name,
                                          input_ds2_topic_name,
-                                         output_vel_topic_name);
+                                         output_vel_topic_name,
+                                         motion_phase_name);
   
   if (!sinkTask_MotionPlanner_.Init()) 
     return -1;

@@ -5,13 +5,15 @@ sinkTaskMotionPlanner::sinkTaskMotionPlanner(ros::NodeHandle &n,
                                      std::string input_pose_topic_name,
                                      std::string input_ds1_topic_name,
                                      std::string input_ds2_topic_name,
-                                     std::string output_vel_topic_name)
+                                     std::string output_vel_topic_name,
+                                     std::string motion_phase_name)
 	: nh_(n),
 	  loop_rate_(frequency),
 	  input_pose_topic_name_(input_pose_topic_name),
 	  input_ds1_topic_name_ (input_ds1_topic_name),
 	  input_ds2_topic_name_ (input_ds2_topic_name),
-	  output_vel_topic_name_ (output_vel_topic_name){
+      output_vel_topic_name_ (output_vel_topic_name),
+      motion_phase_name_(motion_phase_name){
 
 	ROS_INFO_STREAM("Sink-Task Motion Planning node is created at: " << nh_.getNamespace() << " with freq: " << frequency << "Hz");
 }
@@ -22,8 +24,10 @@ sinkTaskMotionPlanner::~sinkTaskMotionPlanner(){
 }
 bool sinkTaskMotionPlanner::Init() {
 
-	// real_pose_.size(3);
-	// desired_velocity_.size(3);
+    real_pose_.resize(3);    real_pose_.setZero();
+    ds1_velocity_.resize(3); ds1_velocity_.setZero();
+    ds2_velocity_.resize(3); ds1_velocity_.setZero();
+    desired_velocity_.resize(3); desired_velocity_.setZero();
 
 	if (!InitializeROS()) {
 		ROS_ERROR_STREAM("ERROR intializing the DS");
@@ -82,21 +86,23 @@ void sinkTaskMotionPlanner::UpdateDS1Velocity(const geometry_msgs::Twist::ConstP
 
 	msg_ds1_twist_ = *msg;
 
-	// real_pose_(0) = msg_real_pose_.position.x;
-	// real_pose_(1) = msg_real_pose_.position.y;
-	// real_pose_(2) = msg_real_pose_.position.z;
+    ds1_velocity_(0) = msg_ds1_twist_.linear.x;
+    ds1_velocity_(1) = msg_ds1_twist_.linear.y;
+    ds1_velocity_(2) = msg_ds1_twist_.linear.z;
+
 }
 
 void sinkTaskMotionPlanner::UpdateDS2Velocity(const geometry_msgs::Twist::ConstPtr& msg) {
 
 	msg_ds2_twist_ = *msg;
 
-	// real_pose_(0) = msg_real_pose_.position.x;
-	// real_pose_(1) = msg_real_pose_.position.y;
-	// real_pose_(2) = msg_real_pose_.position.z;
+    ds2_velocity_(0) = msg_ds2_twist_.linear.x;
+    ds2_velocity_(1) = msg_ds2_twist_.linear.y;
+    ds2_velocity_(2) = msg_ds2_twist_.linear.z;
 }
 
 
+/* This function does the planning logic for the task!! */
 void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
 
 	mutex_.lock();
@@ -118,21 +124,34 @@ void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
  //        ROS_WARN_STREAM_THROTTLE(1, "[Attractor REACHED] Distance to attractor:" << pos_error_);
  //    }
 
- //    msg_desired_velocity_.linear.x  = desired_velocity_(0);
- //    msg_desired_velocity_.linear.y  = desired_velocity_(1);
- //    msg_desired_velocity_.linear.z  = desired_velocity_(2);
-	// msg_desired_velocity_.angular.x = 0;
-	// msg_desired_velocity_.angular.y = 0;
-	// msg_desired_velocity_.angular.z = 0;
- //    ROS_WARN_STREAM_THROTTLE(1, "Desired Velocities:" << desired_velocity_(0) << " " << desired_velocity_(1) << " " << desired_velocity_(2));
+    switch (hashit(motion_phase_name_)){
+    case ePick:
+        ROS_WARN_STREAM_THROTTLE(1, "Doing PICKING motion");
+        desired_velocity_ = ds1_velocity_;
+        break;
 
-	mutex_.unlock();
+    case eSink:
+        ROS_WARN_STREAM_THROTTLE(1, "Doing SINK motion");
+        desired_velocity_ = ds2_velocity_;
+        break;
+    }
+
+    /* Filling in desired velocity message */
+    msg_desired_velocity_.linear.x  = desired_velocity_(0);
+    msg_desired_velocity_.linear.y  = desired_velocity_(1);
+    msg_desired_velocity_.linear.z  = desired_velocity_(2);
+    msg_desired_velocity_.angular.x = 0;
+    msg_desired_velocity_.angular.y = 0;
+    msg_desired_velocity_.angular.z = 0;
+    ROS_WARN_STREAM_THROTTLE(1, "Desired Velocities:" << desired_velocity_(0) << " " << desired_velocity_(1) << " " << desired_velocity_(2));
+
+    mutex_.unlock();
 
 }
 
 
 void sinkTaskMotionPlanner::PublishDesiredVelocity() {
-
+    ROS_WARN_STREAM_THROTTLE(1,"PUBLISIHIIIING");
 	pub_desired_twist_.publish(msg_desired_velocity_);
 
 }

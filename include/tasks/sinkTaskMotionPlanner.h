@@ -13,6 +13,17 @@
 
 using namespace Eigen;
 
+enum string_code_motion {
+    ePick,
+    eSink,
+};
+
+string_code_motion hashit (std::string const inString) {
+    if (inString == "pick") return ePick;
+    if (inString == "sink") return eSink;
+};
+
+
 class sinkTaskMotionPlanner {
 
 private:
@@ -32,6 +43,7 @@ private:
     std::string               input_ds1_topic_name_;
     std::string               input_ds2_topic_name_;
     std::string               output_vel_topic_name_;
+    std::string               motion_phase_name_;
 
     // Messages
     geometry_msgs::Pose       msg_real_pose_;
@@ -44,8 +56,10 @@ private:
 	std::mutex mutex_;
     VectorXd                   *ds1_targets;
     VectorXd                    ds2_target;
-    VectorXd                   real_pose_;
-    VectorXd                   desired_velocity_;
+    VectorXd                    real_pose_;
+    VectorXd                    ds1_velocity_;
+    VectorXd                    ds2_velocity_;
+    VectorXd                    desired_velocity_;
 
     // Gripper Controller
     // std::unique_ptr<RSGripperInterface> gripper_;
@@ -56,7 +70,8 @@ public:
 	                  std::string input_pose_topic_name,
                       std::string input_ds1_topic_name,
                       std::string input_ds2_topic_name,
-	                  std::string output_vel_topic_name);
+                      std::string output_vel_topic_name,
+                      std::string motion_phase_name);
 
     ~sinkTaskMotionPlanner(void);
 

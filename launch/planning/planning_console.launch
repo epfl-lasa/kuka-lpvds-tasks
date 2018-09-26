@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-	<node name="client_console_node" pkg="kuka_lpvds_compliant" type="planning_console_node" required="true" output="screen">
+	<node name="client_console_node" pkg="kuka_lpvds_tasks" type="planning_console_node" required="true" output="screen">
   	</node>	
 	
 </launch>

@@ -200,7 +200,7 @@ void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
             ROS_WARN_STREAM_THROTTLE(1, "Sink TARGET REACHED!!!!.. switching to pick!");
 
             /* Release Cube*/
-            gripper_->setPosition(90); // to open
+            gripper_->setPosition(60); // to open
             ros::Duration(0.2).sleep(); // wait
 
             /*Switch to eSink*/

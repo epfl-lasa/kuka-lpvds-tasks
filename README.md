@@ -7,8 +7,10 @@ This package implements the LPV-DS motion generator from [1] together with the p
 
 ### Dependencies
 To run this package you must install the following dependencies:
-- [kuka-lwr-ros](https://github.com/epfl-lasa/kuka-lwr-ros.git) checkout 'nadia' branch
-- [ds-motion-generator](https://github.com/epfl-lasa/ds_motion_generator.git) checkout 'nadia' branch
+- [kuka-lwr-ros](https://github.com/epfl-lasa/kuka-lwr-ros.git) checkout 'nadia' branch | Control Interface for Kuka LWR 4+
+- [ds-motion-generator](https://github.com/epfl-lasa/ds_motion_generator.git) checkout 'nadia' branch | DS motion generation nodes
+- [lpvDS-lib](https://github.com/nbfigueroa/lpvDS-lib) | lpv-DS class used by ds-motion-generator
+- [grasp-interface](https://github.com/epfl-lasa/grasp_interface) | To control the Robotiq S gripper from code 
 
 ### Simulation
 1. Bring up the kuka-lwr-ros controller and simulator:

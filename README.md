@@ -1,11 +1,9 @@
 # kuka-lpvds-tasks
 This package implements the LPV-DS motion generator from [1] together with the passive-DS controller for the KUKA LWR 4+ robot in both simulation (gazebo) and with the real robot for the following tasks **learned from demonstration**:
 
-- Scenario 1: Production Line
-- Scenario 2: Inspection Line
-- Scenario 3: Shelf-Arranging top and bottom
-- Scenario 4: Cube Gathering **(TODO)**
-- Scenario 5: Bumpy Surface Drawing **(TODO)**
+- Task 1: Inspection Line
+- Task 2: Production Line
+- Task 3: Shelf-Arranging (top and bottom)
 
 ### Dependencies
 To run this package you must install the following dependencies:
@@ -41,7 +39,7 @@ the force will be applied by manipulating the boolean command:
 ### Real robot
 1. Bring up the kuka-lwr-ros controller and console in different terminals: 
 ```
-$ roslaunch roslaunch kuka_lpvds_compliant real.launch
+$ roslaunch lwr_simple_example real.launch
 $ roslaunch lwr_fri lwr_fri_console.launch
 ```
 2. Run the planning-interface to send joint commands:
@@ -56,4 +54,4 @@ These commands are use to send the robot to a "good" initial joint configuration
 
 
 ### Reference
-[1] Figueroa, N. and Billard, A. (2018) "A Physically-Consistent Bayesian Non-Parametric Mixture Model for Dynamical System Learning". Conference on Robot Learning (CoRL) - 2018 Edition. Accepted. 
+[1] Figueroa, N. and Billard, A. (2018) "A Physically-Consistent Bayesian Non-Parametric Mixture Model for Dynamical System Learning". Conference on Robot Learning (CoRL) - 2018 Edition. To Appear. 

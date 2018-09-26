@@ -36,12 +36,14 @@ private:
     ros::Subscriber           sub_ds1_twist_;
     ros::Subscriber           sub_ds2_twist_;
     ros::Publisher            pub_desired_twist_;
+    ros::Publisher            pub_desired_pick_target_;
 
     // Topic Names
     std::string               input_pose_topic_name_;
     std::string               input_ds1_topic_name_;
     std::string               input_ds2_topic_name_;
     std::string               output_vel_topic_name_;
+    std::string               output_pick_topic_name_;
     std::string               motion_phase_name_;
 
     // Messages
@@ -49,7 +51,7 @@ private:
     geometry_msgs::Twist      msg_ds1_twist_;
     geometry_msgs::Twist      msg_ds2_twist_;
     geometry_msgs::Twist      msg_desired_velocity_;
-
+    geometry_msgs::Point      msg_desired_pick_target_;
 
 	// Class variables
     std::mutex                mutex_;
@@ -59,18 +61,18 @@ private:
     VectorXd                  ds1_velocity_;
     VectorXd                  ds2_velocity_;
     VectorXd                  desired_velocity_;
-    std::vector<double>       attractor_pick_;
+    std::vector<double>       attractors_pick_;
     std::vector<double>       attractor_sink_;
-    VectorXd                  target_pick_;
+    VectorXd                  *targets_pick_;
     VectorXd                  target_sink_;
     bool                      bFirst_;
     bool                      bEnd_;
     int                       num_picks_;
     int                       picks_;
     double                    thres_;
+    unsigned int              M_;
 
     // Gripper Controller
-//    std::unique_ptr<RSGripperInterface> gripper_;
     RSGripperInterface*        gripper_;
 
 
@@ -81,8 +83,8 @@ public:
                       std::string input_ds1_topic_name,
                       std::string input_ds2_topic_name,
                       std::string output_vel_topic_name,
-                      std::string motion_phase_name,
-                      std::vector<double> &attractor_pick,
+                      std::string output_pick_topic_name,
+                      std::vector<double> &attractors_pick,
                       std::vector<double> &attractor_sink);
 
     ~sinkTaskMotionPlanner(void);
@@ -104,5 +106,7 @@ private:
 	void ComputeDesiredVelocity();
 
 	void PublishDesiredVelocity();
+
+    void PublishDesiredPickingTarget();
 
 };

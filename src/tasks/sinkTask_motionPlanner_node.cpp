@@ -17,8 +17,8 @@ int main(int argc, char **argv)
   std::string          input_ds1_topic_name;
   std::string          input_ds2_topic_name;
   std::string          output_vel_topic_name;
-  std::string          motion_phase_name;
-  std::vector<double>  attractor_pick;
+  std::string          output_pick_topic_name;
+  std::vector<double>  attractors_pick;
   std::vector<double>  attractor_sink;
   
 
@@ -42,17 +42,12 @@ int main(int argc, char **argv)
     // return -1;
   }
 
-  if (!nh.getParam("motion_phase_name", motion_phase_name))   {
+  if (!nh.getParam("output_pick_topic_name", output_pick_topic_name))   {
     ROS_ERROR("Couldn't retrieve the topic name for the output. ");
     // return -1;
   }
 
-  if (!nh.getParam("motion_phase_name", motion_phase_name))   {
-    ROS_ERROR("Couldn't retrieve the topic name for the output. ");
-    // return -1;
-  }
-
-  if (!nh.getParam("attractor_pick", attractor_pick))   {
+  if (!nh.getParam("attractors_pick", attractors_pick))   {
     ROS_ERROR("Couldn't retrieve the topic name for the output. ");
     // return -1;
   }
@@ -68,8 +63,8 @@ int main(int argc, char **argv)
                                          input_ds1_topic_name,
                                          input_ds2_topic_name,
                                          output_vel_topic_name,
-                                         motion_phase_name,
-                                         attractor_pick,
+                                         output_pick_topic_name,
+                                         attractors_pick,
                                          attractor_sink);
   
   if (!sinkTask_MotionPlanner_.Init()) 
@@ -81,6 +76,11 @@ int main(int argc, char **argv)
   /* Before closing the node, send robot to go_left joint command */
   lwr_ros_client::String_cmd joint_srv;
   joint_srv.request.cmd = "go_left";
+  joint_cmd_client.call(joint_srv);
+
+  ros::Duration(2.0).sleep(); // wait
+
+  joint_srv.request.cmd = "go_home";
   joint_cmd_client.call(joint_srv);
 
   ros::shutdown();

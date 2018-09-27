@@ -30,7 +30,8 @@ These commands are use to send the robot to a "good" initial joint configuration
   ```
   $ roslaunch kuka_lpvds_tasks run_inspection_task.launch sim:=true
   ```
-4. To apply external forces during the execution of the passive-DS controller you can define the force in the following topic:
+
+To apply external forces during the execution (to test the reactivity of the DS and impedance controller) you can define the force in the following topic:
 ```
 /lwr/joint_controllers/passive_ds_external_force
 ```

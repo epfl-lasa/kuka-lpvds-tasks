@@ -2,6 +2,8 @@
 This package implements the LPV-DS motion generator from [1] together with the passive-DS controller for the KUKA LWR 4+ robot in both simulation (gazebo) and with the real robot for the following tasks **learned from demonstration**:
 
 - Task 1: Inspection Line
+Add Gif of Autonomous Execution and Perturbations..
+
 - Task 2: Production Line
 - Task 3: Shelf-Arranging (top and bottom)
 

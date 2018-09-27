@@ -17,12 +17,12 @@ To run this package you must install the following dependencies:
 ### Simulation
 1. Bring up the kuka-lwr-ros controller and simulator:
 ```
-$ roslaunch kuka_lpvds_compliant sim.launch force-interface:=true
+$ roslaunch kuka_lpvds_tasks sim.launch force-interface:=true
 ```
 2. Run the planning-interface to send joint commands:
 ```
-$ roslaunch kuka_lpvds_compliant planning_client.launch
-$ roslaunch kuka_lpvds_compliant planning_console.launch
+$ roslaunch kuka_lpvds_tasks planning_client.launch
+$ roslaunch kuka_lpvds_tasks planning_console.launch
 ```
 Default commands (go_home, go_left, go_right, go_candle)
 These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a learned ds-motion generator.

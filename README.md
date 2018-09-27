@@ -25,11 +25,11 @@ $ roslaunch kuka_lpvds_compliant planning_console.launch
 Default commands (go_home, go_left, go_right, go_candle)
 These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a learned ds-motion generator.
 
-3. Load DS motion generators and Task Planning Node
-3.1 Inspection Line Task
-```
-$ roslaunch kuka_lpvds_tasks run_inspection_task.launch
-```
+3. Load DS motion generators and Task Planning Node  
+- For Inspection Line Task
+  ```
+  $ roslaunch kuka_lpvds_tasks run_inspection_task.launch sim:=true
+  ```
 4. To apply external forces during the execution of the passive-DS controller you can define the force in the following topic:
 ```
 /lwr/joint_controllers/passive_ds_external_force

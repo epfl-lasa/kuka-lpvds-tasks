@@ -46,7 +46,9 @@ To run the tasks on the real robot you should follow the same instructions above
 $ roslaunch lwr_simple_example real.launch
 $ roslaunch lwr_fri lwr_fri_console.launch
 ```
-and additionally you should bring up the gripper grasp-interface:
+and for the **3. Task Planning Node** you should either set ``sim:=false`` or not set at all, as it is the default.
+
+Additionally you should bring up the gripper grasp-interface:
 ```
 $ roslaunch grasp_interface rs_gripper.launch
 ```

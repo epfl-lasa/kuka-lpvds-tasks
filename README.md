@@ -1,11 +1,8 @@
 # kuka-lpvds-tasks
 This package implements the LPV-DS motion generator from [1] together with the passive-DS controller for the KUKA LWR 4+ robot in both simulation (gazebo) and with the real robot for the following tasks **learned from demonstration**:
 
-- Task 1: Inspection Line
-```
-roslaunch grasp_interface rs_gripper.launch
-roslaunch kuka_lpvds_tasks run_inspection_task.launch
-```
+- Task 1: Inspection Line  
+Add Gif of Autonomous Execution and Perturbations..
 
 - Task 2: Production Line
 - Task 3: Shelf-Arranging (top and bottom)
@@ -20,21 +17,23 @@ To run this package you must install the following dependencies:
 ### Simulation
 1. Bring up the kuka-lwr-ros controller and simulator:
 ```
-$ roslaunch kuka_lpvds_compliant sim.launch force-interface:=true
+$ roslaunch kuka_lpvds_tasks sim.launch force-interface:=true
 ```
 2. Run the planning-interface to send joint commands:
 ```
-$ roslaunch kuka_lpvds_compliant planning_client.launch
-$ roslaunch kuka_lpvds_compliant planning_console.launch
+$ roslaunch kuka_lpvds_tasks planning_client.launch
+$ roslaunch kuka_lpvds_tasks planning_console.launch
 ```
 Default commands (go_home, go_left, go_right, go_candle)
 These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a learned ds-motion generator.
 
-3. Load DS motion generator **(TODO: Change to LPV-DS)**:
-```
-$ roslaunch ds_motion_generator load_DS_motionGenerator.launch
-```
-4. To apply external forces during the execution of the passive-DS controller you can define the force in the following topic:
+3. Load DS motion generators and Task Planning Node  
+- For Inspection Line Task
+  ```
+  $ roslaunch kuka_lpvds_tasks run_inspection_task.launch sim:=true
+  ```
+
+To apply external forces during the execution (to test the reactivity of the DS and impedance controller) you can define the force in the following topic:
 ```
 /lwr/joint_controllers/passive_ds_external_force
 ```
@@ -44,21 +43,22 @@ the force will be applied by manipulating the boolean command:
 ```
 
 ### Real robot
+To run the tasks on the real robot you should follow the same instructions above, except for
 1. Bring up the kuka-lwr-ros controller and console in different terminals: 
 ```
 $ roslaunch lwr_simple_example real.launch
 $ roslaunch lwr_fri lwr_fri_console.launch
 ```
-2. Run the planning-interface to send joint commands:
-```
-$ roslaunch kuka_lpvds_compliant planning_client.launch
-$ roslaunch kuka_lpvds_compliant planning_console.launch
-```
-Default commands (go_home, go_left, go_right, go_candle)
-These commands are use to send the robot to a "good" initial joint configuration, generally you should ```go_home``` or ```go_right``` to test a ds-motion generator. If the robot is currently in a weird, near collision configuration ```go_candle``` first.
+and for the **3. Task Planning Node** you should either set ``sim:=false`` or not set at all, as it is the default.
 
-3. ...
-
+Additionally you should bring up the gripper grasp-interface:
+```
+$ roslaunch grasp_interface rs_gripper.launch
+```
+To modify the gripper state during execution you can launch the gripper voice controller from the (demo-voice-control)[https://github.com/epfl-lasa/demo-voice-control] package:
+```
+roslaunch demo_voice_control gripper_voice_control.launch
+```
 
 ### Reference
 [1] Figueroa, N. and Billard, A. (2018) "A Physically-Consistent Bayesian Non-Parametric Mixture Model for Dynamical System Learning". Conference on Robot Learning (CoRL) - 2018 Edition. To Appear. 

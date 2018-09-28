@@ -37,7 +37,7 @@
 	    <param name="output_topic_name"                 value=""/>
 	    <param name="output_filtered_topic_name"        value="/ds2/desired_velocity_filtered"/>
 	    <param name="publish_DS_path"                   value="false"/>
-	    <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/sink-pqlf.yml"/>
+	    <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/via-point-pqlf.yml"/>
 	    <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" />
 	</group>
 
@@ -47,13 +47,13 @@
 	      <param name="output_topic_name"                 value=""/>
 	      <param name="output_filtered_topic_name"        value=""/>    
 	      <param name="publish_DS_path"                   value="true"/>
-	      <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/sink-pqlf.yml"/>
+	      <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/via-point-pqlf.yml"/>
 	      <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" />
 	  </group>
 	</group>
 
 
-	# Load Motion Planning node for Sink Task
+	# Load Motion Planning node for Sink Task (Add simulation option)
 	<group>
 		  <param name="input_pose_topic_name"              value="/lwr/ee_pose"/>
 		  <param name="input_ds1_topic_name"               value="/ds1/desired_velocity_filtered"/>

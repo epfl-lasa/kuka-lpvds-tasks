@@ -20,6 +20,7 @@ int main(int argc, char **argv)
   std::string          output_pick_topic_name;
   std::vector<double>  attractors_pick;
   std::vector<double>  attractor_sink;
+  bool                 sim(false);
   
 
   if (!nh.getParam("input_pose_topic_name", input_pose_topic_name))   {
@@ -58,6 +59,11 @@ int main(int argc, char **argv)
   }
 
 
+  if (!nh.getParam("sim", sim))   {
+    ROS_ERROR("Couldn't retrieve sim value. ");
+    // return -1;
+  }
+
   sinkTaskMotionPlanner sinkTask_MotionPlanner_(nh, frequency,
                                          input_pose_topic_name,
                                          input_ds1_topic_name,
@@ -65,7 +71,8 @@ int main(int argc, char **argv)
                                          output_vel_topic_name,
                                          output_pick_topic_name,
                                          attractors_pick,
-                                         attractor_sink);
+                                         attractor_sink,
+                                         sim);
   
   if (!sinkTask_MotionPlanner_.Init()) 
     return -1;

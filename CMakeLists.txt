@@ -64,3 +64,6 @@ target_link_libraries(planning_action_node  ${PROJECT_NAME} ${catkin_LIBRARIES})
 ############ For DS motion planning node
 add_executable(sinkTask_motionPlanner_node ${SRC_DIR}/tasks/sinkTask_motionPlanner_node.cpp)
 target_link_libraries(sinkTask_motionPlanner_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+
+add_executable(viapointTask_motionPlanner_node ${SRC_DIR}/tasks/viapointTask_motionPlanner_node.cpp)
+target_link_libraries(viapointTask_motionPlanner_node ${PROJECT_NAME} ${catkin_LIBRARIES})

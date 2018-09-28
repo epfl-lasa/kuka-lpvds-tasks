@@ -74,17 +74,14 @@ int main(int argc, char** argv)
       std::array<double,7> des_position;
     
       ac::Joint_action joint_go_right(nh);      
-      // des_position  =  {{-0.308, 0.749, -0.658, -1.118, 0.475, 1.382, 0.559}};
-      // des_position  =  {{-1.0641, 0.8109, 0.8423, -1.2189, -0.6116, 1.3073, -0.233}};
       des_position  =  {{-0.838, 0.614, 0.388, -1.072, -0.1988, 1.478, -0.606}};
       joint_go_right.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_right.debug_print = true;
       actions["go_right"] = &joint_go_right;
       
       ac::Joint_action joint_go_left(nh);   
-      // des_position  =  {{0.858, 0.819, -0.476, -0.7953, 0.2931, 1.528, 0.512}};   
-      // des_position  =  {{0.96716, 0.899, -0.7492, -0.849, 0.502, 1.484, 1.9653}};
-      des_position  =  {{0.52, 0.802, 0.292, -0.826, -0.289, 1.457, 0.7755}};
+      des_position  =  {{0.570, 0.693, 0.265, -0.784, -0.257, 1.557, 0.768}};
+
       joint_go_left.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_left.debug_print = true;
       actions["go_left"]        = &joint_go_left;  
@@ -95,12 +92,6 @@ int main(int argc, char** argv)
       joint_go_home.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_home.debug_print = true;
       actions["go_home"]        = &joint_go_home;
-
-      ac::Joint_action joint_go_nullspace(nh);
-      des_position  =  {{-0.0045, 0.7503, -0.0598, -1.652, 0.0603, 0.7602, 1.538}};
-      joint_go_nullspace.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
-      joint_go_nullspace.debug_print = true;
-      actions["go_nullspace"]        = &joint_go_nullspace;
 
       ac::Joint_action go_candle(nh);
       des_position  =  {{0,0,0,0,0,0,0}};

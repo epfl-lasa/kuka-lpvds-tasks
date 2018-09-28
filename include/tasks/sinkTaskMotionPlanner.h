@@ -71,6 +71,7 @@ private:
     int                       picks_;
     double                    thres_;
     unsigned int              M_;
+    bool                      sim_;
 
     // Gripper Controller
     RSGripperInterface*        gripper_;
@@ -85,7 +86,8 @@ public:
                       std::string output_vel_topic_name,
                       std::string output_pick_topic_name,
                       std::vector<double> &attractors_pick,
-                      std::vector<double> &attractor_sink);
+                      std::vector<double> &attractor_sink,
+                      bool sim);
 
     ~sinkTaskMotionPlanner(void);
 

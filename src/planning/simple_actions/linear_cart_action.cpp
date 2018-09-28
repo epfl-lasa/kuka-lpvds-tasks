@@ -35,7 +35,7 @@ Linear_cart_action::Linear_cart_action(ros::NodeHandle& nh):
     target_id_tmp = 0;
     dist_target = 0;
 
-    loop_rate_hz = 100;
+    loop_rate_hz = 500;
 
 }
 
@@ -61,8 +61,8 @@ bool Linear_cart_action::update(){
     br1.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "x_"));
 
     first_origin        = current_origin;
-    target_p1           = first_origin + tf::Vector3(0,0.1,0);
-    target_p2           = first_origin - tf::Vector3(0,0.1,0);
+    target_p1           = first_origin + tf::Vector3(0,0.00,0.05);
+    target_p2           = first_origin - tf::Vector3(0,0.00,0.05);
     tf::Matrix3x3 tmp1,tmp2;
     double roll, pitch, yaw;
 
@@ -80,7 +80,8 @@ bool Linear_cart_action::update(){
     target_R_p2.setRPY(roll,pitch,yaw);
 
     target_origin       = target_p1;
-    target_orientation  = target_R_p1;
+    // target_orientation  = target_R_p1;
+    target_orientation  = current_orient;
 
     Eigen::Vector3d linear_velocity;
     Eigen::Vector3d angular_velocity;
@@ -136,9 +137,13 @@ bool Linear_cart_action::update(){
         linear_cddynamics->Update();
         linear_cddynamics->GetState(filter_vel);
 
-        ee_vel_msg.linear.x  = filter_vel(0);
-        ee_vel_msg.linear.y  = filter_vel(1);
-        ee_vel_msg.linear.z  = filter_vel(2);
+        // ee_vel_msg.linear.x  = filter_vel(0);
+        // ee_vel_msg.linear.y  = filter_vel(1);
+        // ee_vel_msg.linear.z  = filter_vel(2);
+
+        ee_vel_msg.linear.x  = 0;
+        ee_vel_msg.linear.y  = 0;
+        ee_vel_msg.linear.z  = 0.005;
 
         /// Filter angular velocity
         filter_vel(0) = angular_velocity(0);
@@ -149,9 +154,13 @@ bool Linear_cart_action::update(){
         angular_cddynamics->Update();
         angular_cddynamics->GetState(filter_vel);
 
-        ee_vel_msg.angular.x = angular_velocity(0);
-        ee_vel_msg.angular.y = angular_velocity(1);
-        ee_vel_msg.angular.z = angular_velocity(2);
+        // ee_vel_msg.angular.x = angular_velocity(0);
+        // ee_vel_msg.angular.y = angular_velocity(1);
+        // ee_vel_msg.angular.z = angular_velocity(2);
+
+        ee_vel_msg.angular.x = 0;
+        ee_vel_msg.angular.y = 0;
+        ee_vel_msg.angular.z = 0;
 
         if(b_position)
         {

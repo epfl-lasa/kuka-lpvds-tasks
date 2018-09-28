@@ -8,7 +8,8 @@ sinkTaskMotionPlanner::sinkTaskMotionPlanner(ros::NodeHandle &n,
                                            std::string output_vel_topic_name,
                                            std::string output_pick_topic_name,
                                            std::vector<double> &attractors_pick,
-                                           std::vector<double> &attractor_sink)
+                                           std::vector<double> &attractor_sink,
+                                           bool sim)
 	: nh_(n),
 	  loop_rate_(frequency),
 	  input_pose_topic_name_(input_pose_topic_name),
@@ -19,7 +20,7 @@ sinkTaskMotionPlanner::sinkTaskMotionPlanner(ros::NodeHandle &n,
       attractors_pick_(attractors_pick),
       attractor_sink_(attractor_sink),
       thres_(1e-3),
-      M_(3){
+      M_(3), sim_(sim){
 
 	ROS_INFO_STREAM("Sink-Task Motion Planning node is created at: " << nh_.getNamespace() << " with freq: " << frequency << "Hz");
 }
@@ -62,15 +63,18 @@ bool sinkTaskMotionPlanner::Init() {
 	}
 
     /* Initializing Gripper */
-    gripper_ = new RSGripperInterface(false);
-    ROS_INFO("[RSGripperInterfaceTest] resetting");
-    gripper_->reset();
-    ROS_INFO("[RSGripperInterfaceTest] activating");
-    gripper_->activate();
-    ros::Duration(1.0).sleep();
-    gripper_->setSpeed(300);
-    gripper_->setPosition(64);
-    ros::Duration(1.0).sleep();
+    if (!sim_){
+        gripper_ = new RSGripperInterface(false);
+        ROS_INFO("[RSGripperInterfaceTest] resetting");
+        gripper_->reset();
+        ROS_INFO("[RSGripperInterfaceTest] activating");
+        gripper_->activate();
+        ros::Duration(1.0).sleep();
+        gripper_->setSpeed(300);
+        gripper_->setPosition(64);
+        ros::Duration(1.0).sleep();
+    }
+
 
 	return true;
 }
@@ -108,7 +112,6 @@ void sinkTaskMotionPlanner::Run() {
         PublishDesiredPickingTarget();
 
         ros::spinOnce();
-
         loop_rate_.sleep();
 
     }
@@ -175,9 +178,11 @@ void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
             if (target_error_ < thres_){
                 ROS_WARN_STREAM_THROTTLE(1, "PICKING TARGET REACHED!!!!.. switching to sink!");
 
-                /* Grasp Cube*/
-                ros::Duration(0.2).sleep(); // wait
-                gripper_->setPosition(200); // to close
+                if (!sim_){
+                    /* Grasp Cube*/
+                    ros::Duration(0.2).sleep(); // wait
+                    gripper_->setPosition(200); // to close
+                }
 
                 /*Switch to eSink*/
                 motion_phase_name_ = "sink";
@@ -199,9 +204,11 @@ void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
         if (target_error_ < 2*thres_){
             ROS_WARN_STREAM_THROTTLE(1, "Sink TARGET REACHED!!!!.. switching to pick!");
 
-            /* Release Cube*/
-            gripper_->setPosition(60); // to open
-            ros::Duration(0.2).sleep(); // wait
+            if (!sim_){
+                /* Release Cube*/
+                gripper_->setPosition(60); // to open
+                ros::Duration(0.2).sleep(); // wait
+            }
 
             /*Switch to eSink*/
             motion_phase_name_ = "pick";
@@ -227,7 +234,7 @@ void sinkTaskMotionPlanner::PublishDesiredVelocity() {
     msg_desired_velocity_.angular.x = 0;
     msg_desired_velocity_.angular.y = 0;
     msg_desired_velocity_.angular.z = 0;
-	pub_desired_twist_.publish(msg_desired_velocity_);
+    pub_desired_twist_.publish(msg_desired_velocity_);
 
 }
 

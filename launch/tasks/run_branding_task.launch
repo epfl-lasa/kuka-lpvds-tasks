@@ -37,7 +37,7 @@
 	    <param name="output_topic_name"                 value=""/>
 	    <param name="output_filtered_topic_name"        value="/ds2/desired_velocity_filtered"/>
 	    <param name="publish_DS_path"                   value="false"/>
-	    <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/via-point-pqlf.yml"/>
+	    <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/via-point-pqlf-2.yml"/>
 	    <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" />
 	</group>
 
@@ -47,7 +47,7 @@
 	      <param name="output_topic_name"                 value=""/>
 	      <param name="output_filtered_topic_name"        value=""/>    
 	      <param name="publish_DS_path"                   value="true"/>
-	      <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/via-point-pqlf.yml"/>
+	      <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/via-point-pqlf-2.yml"/>
 	      <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" />
 	  </group>
 	</group>
@@ -61,7 +61,7 @@
 	      <param name="output_vel_topic_name"              value="/lwr/joint_controllers/passive_ds_command_vel"/>
 	      <param name="output_pick_topic_name"             value="/ds1/desired_target"/>
 	      <param name="sim"                                value="$(arg sim)"/>
-	      <rosparam command="load" file="$(find kuka_lpvds_tasks)/config/sinkTask.yml"/>
+	      <rosparam command="load" file="$(find kuka_lpvds_tasks)/config/brandTask_x0.yml"/>
 		  <node name="sinkTask_motionPlanner_node" pkg="kuka_lpvds_tasks"  type="sinkTask_motionPlanner_node" output="screen"/>
 	</group>
 	

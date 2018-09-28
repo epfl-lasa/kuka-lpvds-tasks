@@ -70,6 +70,8 @@ bool sinkTaskMotionPlanner::Init() {
         ROS_INFO("[RSGripperInterfaceTest] activating");
         gripper_->activate();
         ros::Duration(1.0).sleep();
+//        gripper_->setMode(RSGripperInterface::MODE_WIDE);
+        ros::Duration(1.0).sleep();
         gripper_->setSpeed(300);
         gripper_->setPosition(64);
         ros::Duration(1.0).sleep();
@@ -180,8 +182,10 @@ void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
 
                 if (!sim_){
                     /* Grasp Cube*/
-                    ros::Duration(0.2).sleep(); // wait
-                    gripper_->setPosition(200); // to close
+                    ros::Duration(0.1).sleep(); // wait
+                    gripper_->setSpeed(250);
+                    gripper_->setPosition(255); // to close
+                    ros::Duration(0.1).sleep();
                 }
 
                 /*Switch to eSink*/
@@ -200,8 +204,12 @@ void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
         target_error_ = pos_error_.squaredNorm();
         ROS_WARN_STREAM_THROTTLE(1, "Distance to SINK TARGET:" << target_error_);
 
-        /* Check of robot has reached target and swicth to next motion*/
-        if (target_error_ < 2*thres_){
+        /* Check if robot has reached target and swicth to next motion*/
+        /* For sink motion */
+//        if (target_error_ < 2*thres_){
+
+        /* For viapoint motion */
+        if (target_error_ < 5*thres_){
             ROS_WARN_STREAM_THROTTLE(1, "Sink TARGET REACHED!!!!.. switching to pick!");
 
             if (!sim_){

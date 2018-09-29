@@ -15,6 +15,11 @@ int main(int argc, char** argv)
     client_console.AddConsoleCommand("go_right");
     client_console.AddConsoleCommand("go_left");
     client_console.AddConsoleCommand("go_candle");
+    client_console.AddConsoleCommand("go_top_center");
+    client_console.AddConsoleCommand("go_top_left");
+        client_console.AddConsoleCommand("go_top_farleft");
+    client_console.AddConsoleCommand("go_center");
+    client_console.AddConsoleCommand("go_bottom_center");
     client_console.AddConsoleCommand("linear");
 
     client_console.start();

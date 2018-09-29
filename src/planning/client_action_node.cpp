@@ -81,13 +81,11 @@ int main(int argc, char** argv)
       
       ac::Joint_action joint_go_left(nh);   
       des_position  =  {{0.570, 0.693, 0.265, -0.784, -0.257, 1.557, 0.768}};
-
       joint_go_left.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_left.debug_print = true;
       actions["go_left"]        = &joint_go_left;  
       
       ac::Joint_action joint_go_home(nh);
-      // des_position  =  {{0.529, 0.243, -0.4973, -1.3239, 0.0973, 1.5216, 0.0611}};
       des_position  =  {{-0.102, 0.226, 0.14, -1.456, -0.025, 1.407, -0.001}};
       joint_go_home.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_home.debug_print = true;
@@ -98,6 +96,37 @@ int main(int argc, char** argv)
       go_candle.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       go_candle.debug_print = true;
       actions["go_candle"]         = &go_candle;
+
+      ac::Joint_action joint_go_top_center(nh);         
+      des_position  =  {{-0.842, 0.903, 1.479, -1.180, 0.218, 0.375, -1.11}};            
+      joint_go_top_center.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
+      joint_go_top_center.debug_print = true;
+      actions["go_top_center"]        = &joint_go_top_center;  
+      
+      ac::Joint_action joint_go_top_farleft(nh);         
+      des_position  =  {{-0.706, 0.49, 1.509, -1.622, 0.551, -0.075, -1.04}};                
+      joint_go_top_farleft.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
+      joint_go_top_farleft.debug_print = true;
+      actions["go_top_farleft"]        = &joint_go_top_farleft;  
+
+      ac::Joint_action joint_go_top_left(nh);         
+      des_position  =  {{-0.896, 0.63, 1.536, -1.562, 0.773, 0.137, -1.426}};            
+      joint_go_top_left.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
+      joint_go_top_left.debug_print = true;
+      actions["go_top_left"]        = &joint_go_top_left;  
+
+      ac::Joint_action joint_go_center(nh);          
+      des_position  =  {{-1.677, 1.385, 1.771, -1.923, -0.20, 0.585, -1.0438}};            
+      joint_go_center.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
+      joint_go_center.debug_print = true;
+      actions["go_center"]        = &joint_go_center;  
+
+      ac::Joint_action joint_go_bottom_center(nh);         
+      des_position  =  {{0.217, 1.649, 0.485, -0.707, -1.801, -1.0479, 0.713}};
+      joint_go_bottom_center.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
+      joint_go_bottom_center.debug_print = true;
+      actions["go_bottom_center"]        = &joint_go_bottom_center;  
+
 
       simple_actions::Linear_cart_action linear_cart_action(nh);
       actions["linear"]         = &linear_cart_action;

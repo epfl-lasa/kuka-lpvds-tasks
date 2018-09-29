@@ -1,12 +1,12 @@
 #include "ros/ros.h"
-#include "sinkTaskMotionPlanner.h"
+#include "shelfTaskMotionPlanner.h"
 #include "lwr_ros_client/action_client_cmd_interface.h"
 #include <vector>
 
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "viapointTask_motionPlanner_node");
+  ros::init(argc, argv, "shelfTask_motionPlanner_node");
 
   ros::NodeHandle nh;
   double frequency = 500.0;
@@ -19,7 +19,7 @@ int main(int argc, char **argv)
   std::string          output_vel_topic_name;
   std::string          output_pick_topic_name;
   std::vector<double>  attractors_pick;
-  std::vector<double>  attractor_sink;
+  std::vector<double>  attractor_place;
   bool                 sim(false);
 
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     // return -1;
   }
 
-  if (!nh.getParam("attractor_sink", attractor_sink))   {
+  if (!nh.getParam("attractor_place", attractor_place))   {
     ROS_ERROR("Couldn't retrieve the topic name for the output. ");
     // return -1;
   }
@@ -63,32 +63,32 @@ int main(int argc, char **argv)
     // return -1;
   }
 
-  sinkTaskMotionPlanner sinkTask_MotionPlanner_(nh, frequency,
+  /* Before starting the node go to good joint-space task */
+  lwr_ros_client::String_cmd joint_srv;
+  joint_srv.request.cmd = "go_center";
+  joint_cmd_client.call(joint_srv);
+  ros::Duration(2.0).sleep(); // wait
+
+
+  shelfTaskMotionPlanner shelfTaskMotionPlanner_(nh, frequency,
                                          input_pose_topic_name,
                                          input_ds1_topic_name,
                                          input_ds2_topic_name,
                                          output_vel_topic_name,
                                          output_pick_topic_name,
                                          attractors_pick,
-                                         attractor_sink,
+                                         attractor_place,
                                          sim);
   
-  if (!sinkTask_MotionPlanner_.Init()) 
+  if (!shelfTaskMotionPlanner_.Init()) 
     return -1;
   else 
-    sinkTask_MotionPlanner_.Run();
+    shelfTaskMotionPlanner_.Run();
 
 
   /* Before closing the node, send robot to go_left joint command */
-  lwr_ros_client::String_cmd joint_srv;
-  joint_srv.request.cmd = "go_left";
   joint_cmd_client.call(joint_srv);
-
-  ros::Duration(2.0).sleep(); // wait
-
-  joint_srv.request.cmd = "go_home";
-  joint_cmd_client.call(joint_srv);
-
+  ros::Duration(1.0).sleep(); // wait
   ros::shutdown();
 
   return 0;

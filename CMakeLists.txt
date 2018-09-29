@@ -50,7 +50,8 @@ include_directories(include include/tasks ${catkin_INCLUDE_DIRS})
 add_library(${PROJECT_NAME} ${SRC_DIR}/planning/simple_actions/linear_cart_action.cpp
                             ${INCLUDE_DIR}/planning/simple_actions/linear_cart_action.h
                             ${SRC_DIR}/tasks/motion_planners/sinkTaskMotionPlanner.cpp
-                            ${INCLUDE_DIR}/tasks/sinkTaskMotionPlanner.h)
+                            ${SRC_DIR}/tasks/motion_planners/shelfTaskMotionPlanner.cpp
+                            ${INCLUDE_DIR}/tasks/shelfTaskMotionPlanner.h)
 
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} )
 
@@ -61,9 +62,10 @@ target_link_libraries(planning_console_node  ${catkin_LIBRARIES}              )
 add_executable(planning_action_node ${SRC_DIR}/planning/client_action_node.cpp	)
 target_link_libraries(planning_action_node  ${PROJECT_NAME} ${catkin_LIBRARIES})
 
-############ For DS motion planning node
+############ For DS motion planning node for sink and viapoint tasks
 add_executable(sinkTask_motionPlanner_node ${SRC_DIR}/tasks/sinkTask_motionPlanner_node.cpp)
 target_link_libraries(sinkTask_motionPlanner_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 
-add_executable(viapointTask_motionPlanner_node ${SRC_DIR}/tasks/viapointTask_motionPlanner_node.cpp)
-target_link_libraries(viapointTask_motionPlanner_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+############ For DS motion planning node for shelf task
+add_executable(shelfTask_motionPlanner_node ${SRC_DIR}/tasks/shelfTask_motionPlanner_node.cpp)
+target_link_libraries(shelfTask_motionPlanner_node ${PROJECT_NAME} ${catkin_LIBRARIES})

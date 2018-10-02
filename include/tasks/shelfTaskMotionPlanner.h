@@ -37,6 +37,7 @@ private:
     ros::Subscriber           sub_ds2_twist_;
     ros::Publisher            pub_desired_twist_;
     ros::Publisher            pub_desired_pick_target_;
+    ros::Publisher            pub_desired_place_target_;
 
     // Topic Names
     std::string               input_pose_topic_name_;
@@ -44,6 +45,7 @@ private:
     std::string               input_ds2_topic_name_;
     std::string               output_vel_topic_name_;
     std::string               output_pick_topic_name_;
+    std::string               output_place_topic_name_;
     std::string               motion_phase_name_;
 
     // Messages
@@ -52,6 +54,7 @@ private:
     geometry_msgs::Twist      msg_ds2_twist_;
     geometry_msgs::Twist      msg_desired_velocity_;
     geometry_msgs::Point      msg_desired_pick_target_;
+    geometry_msgs::Point      msg_desired_place_target_;
 
 	// Class variables
     std::mutex                mutex_;
@@ -62,9 +65,9 @@ private:
     VectorXd                  ds2_velocity_;
     VectorXd                  desired_velocity_;
     std::vector<double>       attractors_pick_;
-    std::vector<double>       attractor_place_;
+    std::vector<double>       attractors_place_;
     VectorXd                  *targets_pick_;
-    VectorXd                  target_place_;
+    VectorXd                  *targets_place_;
     bool                      bFirst_;
     bool                      bEnd_;
     int                       num_picks_;
@@ -85,8 +88,9 @@ public:
                       std::string input_ds2_topic_name,
                       std::string output_vel_topic_name,
                       std::string output_pick_topic_name,
+                      std::string output_place_topic_name,
                       std::vector<double> &attractors_pick,
-                      std::vector<double> &attractor_place,
+                      std::vector<double> &attractors_place,
                       bool sim);
 
     ~shelfTaskMotionPlanner(void);
@@ -109,6 +113,6 @@ private:
 
 	void PublishDesiredVelocity();
 
-    void PublishDesiredPickingTarget();
+    void PublishDesiredTargets();
 
 };

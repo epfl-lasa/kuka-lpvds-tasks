@@ -7,8 +7,9 @@ shelfTaskMotionPlanner::shelfTaskMotionPlanner(ros::NodeHandle &n,
                                            std::string input_ds2_topic_name,
                                            std::string output_vel_topic_name,
                                            std::string output_pick_topic_name,
+                                           std::string output_place_topic_name,
                                            std::vector<double> &attractors_pick,
-                                           std::vector<double> &attractor_place,
+                                           std::vector<double> &attractors_place,
                                            bool sim)
 	: nh_(n),
 	  loop_rate_(frequency),
@@ -17,9 +18,10 @@ shelfTaskMotionPlanner::shelfTaskMotionPlanner(ros::NodeHandle &n,
 	  input_ds2_topic_name_ (input_ds2_topic_name),
       output_vel_topic_name_ (output_vel_topic_name),
       output_pick_topic_name_ (output_pick_topic_name),
+      output_place_topic_name_ (output_place_topic_name),
       attractors_pick_(attractors_pick),
-      attractor_place_(attractor_place),
-      thres_(1e-3),
+      attractors_place_(attractors_place),
+      thres_(1.5e-3),
       M_(3), sim_(sim){
 
 	ROS_INFO_STREAM("place-Task Motion Planning node is created at: " << nh_.getNamespace() << " with freq: " << frequency << "Hz");
@@ -35,23 +37,27 @@ bool shelfTaskMotionPlanner::Init() {
     ds1_velocity_.resize(M_);     ds1_velocity_.setZero();
     ds2_velocity_.resize(M_);     ds1_velocity_.setZero();
     desired_velocity_.resize(M_); desired_velocity_.setZero();
-    target_place_.resize(M_);      target_place_.setZero();
 
-    /* Fill in target Vector for place motion*/
-    for (unsigned int i=0;i < M_; i++)
-        target_place_(i) = attractor_place_[i];
 
-    /* Fill in targets Vector* for place motion*/
+    /* Fill in targets Vector* for pick/place motion*/
     num_picks_ = (int) attractors_pick_.size()/M_;
     ROS_INFO_STREAM("Doing  " << num_picks_ << " picks!" );
     targets_pick_  = new VectorXd[num_picks_];
-    for(unsigned int s=0; s<num_picks_; s++ ){targets_pick_[s].resize(M_);	}
+    targets_place_  = new VectorXd[num_picks_];
+    for(unsigned int s=0; s<num_picks_; s++ ){
+        targets_pick_[s].resize(M_);
+        targets_place_[s].resize(M_);
+    }
 
     for(int p=0; p < num_picks_; p++ ){
         VectorXd target_pick_; target_pick_.resize(M_); target_pick_.setZero();
-        for (unsigned int m = 0; m < M_; m++)
+        VectorXd target_place_; target_place_.resize(M_); target_place_.setZero();
+        for (unsigned int m = 0; m < M_; m++){
             target_pick_[m] = attractors_pick_[p * 3 + m];
+            target_place_[m] = attractors_place_[p * 3 + m];
+        }
         targets_pick_[p] = target_pick_;
+        targets_place_[p] = target_place_;
     }
 
     bFirst_ = true;
@@ -63,7 +69,6 @@ bool shelfTaskMotionPlanner::Init() {
 		return false;
 	}
 
-    ROS_INFO_STREAM("here!" );
     /* Initializing Gripper */
     if (!sim_){
         gripper_ = new RSGripperInterface(false);
@@ -72,10 +77,8 @@ bool shelfTaskMotionPlanner::Init() {
         ROS_INFO("[RSGripperInterfaceTest] activating");
         gripper_->activate();
         ros::Duration(1.0).sleep();
-        ros::Duration(1.0).sleep();
         gripper_->setSpeed(300);
-        gripper_->setPosition(64);
-        ros::Duration(1.0).sleep();
+        gripper_->setPosition(0);
     }
 
 	return true;
@@ -92,6 +95,7 @@ bool shelfTaskMotionPlanner::InitializeROS() {
 	/* Initialize publishers */
     pub_desired_twist_          = nh_.advertise<geometry_msgs::Twist>(output_vel_topic_name_, 1);    
     pub_desired_pick_target_    = nh_.advertise<geometry_msgs::Point>(output_pick_topic_name_, 1);
+    pub_desired_place_target_   = nh_.advertise<geometry_msgs::Point>(output_place_topic_name_, 1);
 
 	if (nh_.ok()) { // Wait for poses being published
 		ros::spinOnce();
@@ -111,7 +115,7 @@ void shelfTaskMotionPlanner::Run() {
 
         ComputeDesiredVelocity();
         PublishDesiredVelocity();
-        PublishDesiredPickingTarget();
+        PublishDesiredTargets();
 
         ros::spinOnce();
         loop_rate_.sleep();
@@ -177,15 +181,15 @@ void shelfTaskMotionPlanner::ComputeDesiredVelocity() {
             ROS_WARN_STREAM_THROTTLE(1, "Distance to PICKING TARGET" << picks_ << ": " << target_error_);
 
             /* Check of robot has reached target and swicth to next motion*/
-            if (target_error_ < thres_){
+            if (target_error_ < 2*thres_){
                 ROS_WARN_STREAM_THROTTLE(1, "PICKING TARGET REACHED!!!!.. switching to place!");
 
                 if (!sim_){
                     /* Grasp Cube*/
                     ros::Duration(0.1).sleep(); // wait
                     gripper_->setSpeed(250);
-                    gripper_->setPosition(200); // to close
-                    ros::Duration(0.1).sleep();
+                    gripper_->setPosition(255); // to close
+                    ros::Duration(0.2).sleep();
                 }
 
                 /*Switch to eplace*/
@@ -200,18 +204,18 @@ void shelfTaskMotionPlanner::ComputeDesiredVelocity() {
     case ePlace:
         ROS_WARN_STREAM_THROTTLE(1, "Doing place motion");
         desired_velocity_ = ds2_velocity_;
-        pos_error_ = real_pose_ - target_place_;
+        pos_error_ = real_pose_ - targets_place_[picks_];
         target_error_ = pos_error_.squaredNorm();
         ROS_WARN_STREAM_THROTTLE(1, "Distance to place TARGET:" << target_error_);
 
         /* Check if robot has reached target and swicth to next motion*/
-       if (target_error_ < 2*thres_){
+       if (target_error_ < 3*thres_){
             ROS_WARN_STREAM_THROTTLE(1, "place TARGET REACHED!!!!.. switching to pick!");
 
             if (!sim_){
                 /* Release Box*/
                 gripper_->setPosition(0); // to open
-                ros::Duration(0.2).sleep(); // wait
+                ros::Duration(0.5).sleep(); // wait
             }
 
             /*Switch to eplace*/
@@ -243,13 +247,20 @@ void shelfTaskMotionPlanner::PublishDesiredVelocity() {
 }
 
 
-void shelfTaskMotionPlanner::PublishDesiredPickingTarget(){
+void shelfTaskMotionPlanner::PublishDesiredTargets(){
 
     if(picks_ < num_picks_){
+        /* Target for DS1 */
         msg_desired_pick_target_.x = targets_pick_[picks_](0);
         msg_desired_pick_target_.y = targets_pick_[picks_](1);
         msg_desired_pick_target_.z = targets_pick_[picks_](2);
         pub_desired_pick_target_.publish(msg_desired_pick_target_);
+
+        /* Target for DS2 */
+        msg_desired_place_target_.x = targets_place_[picks_](0);
+        msg_desired_place_target_.y = targets_place_[picks_](1);
+        msg_desired_place_target_.z = targets_place_[picks_](2);
+        pub_desired_place_target_.publish(msg_desired_place_target_);
 
     }
 }

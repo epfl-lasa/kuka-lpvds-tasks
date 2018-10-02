@@ -70,13 +70,10 @@ bool sinkTaskMotionPlanner::Init() {
         ROS_INFO("[RSGripperInterfaceTest] activating");
         gripper_->activate();
         ros::Duration(1.0).sleep();
-//        gripper_->setMode(RSGripperInterface::MODE_WIDE);
-        ros::Duration(1.0).sleep();
         gripper_->setSpeed(300);
         gripper_->setPosition(64);
         ros::Duration(1.0).sleep();
     }
-
 
 	return true;
 }
@@ -93,7 +90,7 @@ bool sinkTaskMotionPlanner::InitializeROS() {
     pub_desired_twist_          = nh_.advertise<geometry_msgs::Twist>(output_vel_topic_name_, 1);    
     pub_desired_pick_target_    = nh_.advertise<geometry_msgs::Point>(output_pick_topic_name_, 1);
 
-	if (nh_.ok()) { // Wait for poses being published
+    if (nh_.ok()) {
 		ros::spinOnce();
 		ROS_INFO("The Sink Task planner is ready.");
 		return true;

@@ -18,8 +18,9 @@ int main(int argc, char **argv)
   std::string          input_ds2_topic_name;
   std::string          output_vel_topic_name;
   std::string          output_pick_topic_name;
+  std::string          output_place_topic_name;
   std::vector<double>  attractors_pick;
-  std::vector<double>  attractor_place;
+  std::vector<double>  attractors_place;
   bool                 sim(false);
 
 
@@ -39,12 +40,17 @@ int main(int argc, char **argv)
   }
 
   if (!nh.getParam("output_vel_topic_name", output_vel_topic_name))   {
-    ROS_ERROR("Couldn't retrieve the topic name for the output. ");
+    ROS_ERROR("Couldn't retrieve the topic name for the velocity output. ");
     // return -1;
   }
 
   if (!nh.getParam("output_pick_topic_name", output_pick_topic_name))   {
-    ROS_ERROR("Couldn't retrieve the topic name for the output. ");
+    ROS_ERROR("Couldn't retrieve the topic name for the output of pick topic. ");
+    // return -1;
+  }
+
+  if (!nh.getParam("output_place_topic_name", output_place_topic_name))   {
+    ROS_ERROR("Couldn't retrieve the topic name for the output of place topic. ");
     // return -1;
   }
 
@@ -53,7 +59,7 @@ int main(int argc, char **argv)
     // return -1;
   }
 
-  if (!nh.getParam("attractor_place", attractor_place))   {
+  if (!nh.getParam("attractors_place", attractors_place))   {
     ROS_ERROR("Couldn't retrieve the topic name for the output. ");
     // return -1;
   }
@@ -67,28 +73,54 @@ int main(int argc, char **argv)
   lwr_ros_client::String_cmd joint_srv;
   joint_srv.request.cmd = "go_center";
   joint_cmd_client.call(joint_srv);
-  ros::Duration(2.0).sleep(); // wait
+  ros::Duration(5.0).sleep(); // wait
 
 
-  shelfTaskMotionPlanner shelfTaskMotionPlanner_(nh, frequency,
-                                         input_pose_topic_name,
-                                         input_ds1_topic_name,
-                                         input_ds2_topic_name,
-                                         output_vel_topic_name,
-                                         output_pick_topic_name,
-                                         attractors_pick,
-                                         attractor_place,
-                                         sim);
-  
-  if (!shelfTaskMotionPlanner_.Init()) 
-    return -1;
-  else 
-    shelfTaskMotionPlanner_.Run();
+  int num_picks = (int)(attractors_pick.size()/3);
+  shelfTaskMotionPlanner* shelfTaskMotionPlanner_;
+  std::vector<double> attractor_pick; attractor_pick.resize(3);
+  std::vector<double> attractor_place; attractor_place.resize(3);
+  for(int p=0; p<num_picks; p++){
+      for(unsigned int i=0; i<3; i++){
+          attractor_pick[i] = attractors_pick[i + p*3];
+          attractor_place[i] = attractors_place[i + p*3];
+      }
+
+      shelfTaskMotionPlanner_ = new shelfTaskMotionPlanner(nh, frequency,
+                                                           input_pose_topic_name,
+                                                           input_ds1_topic_name,
+                                                           input_ds2_topic_name,
+                                                           output_vel_topic_name,
+                                                           output_pick_topic_name,
+                                                           output_place_topic_name,
+                                                           attractor_pick,
+                                                           attractor_place,
+                                                           sim);
+      /* Run Motion Planning Class */
+      if (!shelfTaskMotionPlanner_->Init())
+          return -1;
+      else
+          shelfTaskMotionPlanner_->Run();
+
+      /* Send robot to go_center joint command */
+      joint_srv.request.cmd = "go_center";
+      joint_cmd_client.call(joint_srv);
+      ros::Duration(5.0).sleep(); // wait
+
+      /* Send robot to go_center joint command */
+      joint_srv.request.cmd = "go_center_up";
+      joint_cmd_client.call(joint_srv);
+      ros::Duration(5.0).sleep(); // wait
+
+      /* Send robot to go_center joint command */
+      joint_srv.request.cmd = "go_center_up";
+      joint_cmd_client.call(joint_srv);
+      ros::Duration(5.0).sleep(); // wait
+  }
 
 
-  /* Before closing the node, send robot to go_left joint command */
-  joint_cmd_client.call(joint_srv);
-  ros::Duration(1.0).sleep(); // wait
+
+  /* Shutdown node after doing all this */
   ros::shutdown();
 
   return 0;

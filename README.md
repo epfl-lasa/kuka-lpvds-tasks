@@ -4,8 +4,8 @@ This package implements the LPV-DS motion generator from [1] together with the p
 - Task 1: Inspection Line  
 Add Gif of Autonomous Execution and Perturbations..
 
-- Task 2: Production Line
-- Task 3: Shelf-Arranging (top and bottom)
+- Task 2: Branding Line
+- Task 3: Shelf-Arranging (top only - for now)
 
 ### Dependencies
 To run this package you must install the following dependencies:

@@ -55,7 +55,7 @@ Additionally you should bring up the gripper grasp-interface:
 ```
 $ roslaunch grasp_interface rs_gripper.launch
 ```
-To modify the gripper state during execution you can launch the gripper voice controller from the (demo-voice-control)[https://github.com/epfl-lasa/demo-voice-control] package:
+To modify the gripper state during execution you can launch the gripper voice controller from the [demo-voice-control](https://github.com/epfl-lasa/demo-voice-control) package:
 ```
 roslaunch demo_voice_control gripper_voice_control.launch
 ```

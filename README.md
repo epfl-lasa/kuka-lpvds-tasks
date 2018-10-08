@@ -2,10 +2,13 @@
 This package implements the LPV-DS motion generator from [1] together with the passive-DS controller for the KUKA LWR 4+ robot in both simulation (gazebo) and with the real robot for the following tasks **learned from demonstration**:
 
 - Task 1: Inspection Line  
-Add Gif of Autonomous Execution and Perturbations..
 
-- Task 2: Production Line
-- Task 3: Shelf-Arranging (top and bottom)
+- Task 2: Branding Line
+
+- Task 3: Shelf-Arranging (top only - for now)
+
+
+Videos of the execution of these tasks on the real robot can be found here: [robot-experiments](http://lasa.epfl.ch/files/Nadia/Figueroa-CoRL2018-Experiments.mp4)
 
 ### Dependencies
 To run this package you must install the following dependencies:
@@ -32,6 +35,14 @@ These commands are use to send the robot to a "good" initial joint configuration
   ```
   $ roslaunch kuka_lpvds_tasks run_inspection_task.launch sim:=true
   ```
+- For Inspection Line Task
+  ```
+  $ roslaunch kuka_lpvds_tasks run_branding_task.launch sim:=true
+  ```
+- For Inspection Line Task
+  ```
+  $ roslaunch kuka_lpvds_tasks run_shelf_task.launch sim:=true
+  ```
 
 To apply external forces during the execution (to test the reactivity of the DS and impedance controller) you can define the force in the following topic:
 ```
@@ -49,16 +60,19 @@ To run the tasks on the real robot you should follow the same instructions above
 $ roslaunch lwr_simple_example real.launch
 $ roslaunch lwr_fri lwr_fri_console.launch
 ```
-and for the **3. Task Planning Node** you should either set ``sim:=false`` or not set at all, as it is the default.
+and for the **3. Load DS motion generators and Task Planning Node** you should either set ``sim:=false`` or not set at all, as it is the default.
 
 Additionally you should bring up the gripper grasp-interface:
 ```
 $ roslaunch grasp_interface rs_gripper.launch
 ```
-To modify the gripper state during execution you can launch the gripper voice controller from the (demo-voice-control)[https://github.com/epfl-lasa/demo-voice-control] package:
+To modify the gripper state during execution you can launch the gripper voice controller from the [demo-voice-control](https://github.com/epfl-lasa/demo-voice-control) package:
 ```
 roslaunch demo_voice_control gripper_voice_control.launch
 ```
 
 ### Reference
-[1] Figueroa, N. and Billard, A. (2018) "A Physically-Consistent Bayesian Non-Parametric Mixture Model for Dynamical System Learning". Conference on Robot Learning (CoRL) - 2018 Edition. To Appear. 
+> [1] Figueroa, N. and Billard, A. (2018) "A Physically-Consistent Bayesian Non-Parametric Mixture Model for Dynamical System Learning". Conference on Robot Learning (CoRL) - 2018 Edition. To Appear. 
+
+**Acknowledgments**
+This work was supported by the EU project [Cogimon](https://cogimon.eu/cognitive-interaction-motion-cogimon) H2020-ICT-23-2014.

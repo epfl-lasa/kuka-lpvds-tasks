@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2016 Learning Algorithms and Systems Laboratory, EPFL, Switzerland
+ * Author:  Guillaume De Chambrier
+ * email:   guillaume.dechambrier@epfl.ch
+ * website: lasa.epfl.ch
+ *
+ * Permission is granted to copy, distribute, and/or modify this program
+ * under the terms of the GNU General Public License, version 2 or any
+ * later version published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details
+ */
+
+
 #include <ros/ros.h>
 
 #include "lwr_ros_client/action_client_cmd_interface.h"
@@ -74,7 +91,8 @@ int main(int argc, char** argv)
       std::array<double,7> des_position;
     
       ac::Joint_action joint_go_right(nh);      
-      des_position  =  {{-0.838, 0.614, 0.388, -1.072, -0.1988, 1.478, -0.606}};
+//      des_position  =  {{-0.838, 0.614, 0.388, -1.072, -0.1988, 1.478, -0.606}};
+      des_position  =  {{-1.323, 0.797, 0.990, -1.423, -0.464, 1.469, -0.0944}};
       joint_go_right.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_right.debug_print = true;
       actions["go_right"] = &joint_go_right;
@@ -109,6 +127,12 @@ int main(int argc, char** argv)
       joint_go_center_up.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_center_up.debug_print = true;
       actions["go_center_up"]        = &joint_go_center_up;
+
+      ac::Joint_action joint_go_top_center(nh);
+      des_position  =  {{-0.763, 1.00, 1.140, -0.730, -2.225, -0.939, -0.027}};
+      joint_go_top_center.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
+      joint_go_top_center.debug_print = true;
+      actions["go_top_center"]        = &joint_go_top_center;
 
 
       simple_actions::Linear_cart_action linear_cart_action(nh);

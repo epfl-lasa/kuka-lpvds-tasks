@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2016 Learning Algorithms and Systems Laboratory, EPFL, Switzerland
+ * Author:  Guillaume De Chambrier
+ * email:   guillaume.dechambrier@epfl.ch
+ * website: lasa.epfl.ch
+ *
+ * Permission is granted to copy, distribute, and/or modify this program
+ * under the terms of the GNU General Public License, version 2 or any
+ * later version published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details
+ */
+
 #include "kuka_action_server/action_server.h"
 #include "kuka_action_client/ros_param_parser.h"
 

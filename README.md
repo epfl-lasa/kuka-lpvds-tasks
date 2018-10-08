@@ -2,10 +2,13 @@
 This package implements the LPV-DS motion generator from [1] together with the passive-DS controller for the KUKA LWR 4+ robot in both simulation (gazebo) and with the real robot for the following tasks **learned from demonstration**:
 
 - Task 1: Inspection Line  
-Add Gif of Autonomous Execution and Perturbations..
 
 - Task 2: Branding Line
+
 - Task 3: Shelf-Arranging (top only - for now)
+
+
+Videos of the execution of these tasks on the real robot can be found here: [robot-experiments](http://lasa.epfl.ch/files/Nadia/Figueroa-CoRL2018-Experiments.mp4)
 
 ### Dependencies
 To run this package you must install the following dependencies:
@@ -32,6 +35,14 @@ These commands are use to send the robot to a "good" initial joint configuration
   ```
   $ roslaunch kuka_lpvds_tasks run_inspection_task.launch sim:=true
   ```
+- For Inspection Line Task
+  ```
+  $ roslaunch kuka_lpvds_tasks run_branding_task.launch sim:=true
+  ```
+- For Inspection Line Task
+  ```
+  $ roslaunch kuka_lpvds_tasks run_shelf_task.launch sim:=true
+  ```
 
 To apply external forces during the execution (to test the reactivity of the DS and impedance controller) you can define the force in the following topic:
 ```
@@ -49,7 +60,7 @@ To run the tasks on the real robot you should follow the same instructions above
 $ roslaunch lwr_simple_example real.launch
 $ roslaunch lwr_fri lwr_fri_console.launch
 ```
-and for the **3. Task Planning Node** you should either set ``sim:=false`` or not set at all, as it is the default.
+and for the **3. Load DS motion generators and Task Planning Node** you should either set ``sim:=false`` or not set at all, as it is the default.
 
 Additionally you should bring up the gripper grasp-interface:
 ```

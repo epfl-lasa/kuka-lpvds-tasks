@@ -16,9 +16,9 @@
  * Public License for more details
  */
 
-#include "sinkTaskMotionPlanner.h"
+#include "tableTaskMotionPlanner.h"
 
-sinkTaskMotionPlanner::sinkTaskMotionPlanner(ros::NodeHandle &n,
+tableTaskMotionPlanner::tableTaskMotionPlanner(ros::NodeHandle &n,
                                            double frequency,
                                            std::string input_pose_topic_name,
                                            std::string input_ds1_topic_name,
@@ -43,11 +43,11 @@ sinkTaskMotionPlanner::sinkTaskMotionPlanner(ros::NodeHandle &n,
 	ROS_INFO_STREAM("Sink-Task Motion Planning node is created at: " << nh_.getNamespace() << " with freq: " << frequency << "Hz");
 }
 
-sinkTaskMotionPlanner::~sinkTaskMotionPlanner(){
+tableTaskMotionPlanner::~tableTaskMotionPlanner(){
     ROS_INFO_STREAM("In destructor.. motion generator was killed! ");
 
 }
-bool sinkTaskMotionPlanner::Init() {
+bool tableTaskMotionPlanner::Init() {
 
     real_pose_.resize(M_);        real_pose_.setZero();
     ds1_velocity_.resize(M_);     ds1_velocity_.setZero();
@@ -96,12 +96,12 @@ bool sinkTaskMotionPlanner::Init() {
 	return true;
 }
 
-bool sinkTaskMotionPlanner::InitializeROS() {
+bool tableTaskMotionPlanner::InitializeROS() {
 
 	/* Initialize subscribers */
-    sub_real_pose_              = nh_.subscribe( input_pose_topic_name_ , 1000, &sinkTaskMotionPlanner::UpdateRealPosition, this, ros::TransportHints().reliable().tcpNoDelay());
-    sub_ds1_twist_              = nh_.subscribe( input_ds1_topic_name_  , 1000, &sinkTaskMotionPlanner::UpdateDS1Velocity, this, ros::TransportHints().reliable().tcpNoDelay());
-    sub_ds2_twist_              = nh_.subscribe( input_ds2_topic_name_,   1000, &sinkTaskMotionPlanner::UpdateDS2Velocity, this, ros::TransportHints().reliable().tcpNoDelay());
+    sub_real_pose_              = nh_.subscribe( input_pose_topic_name_ , 1000, &tableTaskMotionPlanner::UpdateRealPosition, this, ros::TransportHints().reliable().tcpNoDelay());
+    sub_ds1_twist_              = nh_.subscribe( input_ds1_topic_name_  , 1000, &tableTaskMotionPlanner::UpdateDS1Velocity, this, ros::TransportHints().reliable().tcpNoDelay());
+    sub_ds2_twist_              = nh_.subscribe( input_ds2_topic_name_,   1000, &tableTaskMotionPlanner::UpdateDS2Velocity, this, ros::TransportHints().reliable().tcpNoDelay());
 
 
 	/* Initialize publishers */
@@ -120,7 +120,7 @@ bool sinkTaskMotionPlanner::InitializeROS() {
 }
 
 
-void sinkTaskMotionPlanner::Run() {
+void tableTaskMotionPlanner::Run() {
 
     while ((nh_.ok()) && (picks_ < num_picks_)){
 
@@ -140,7 +140,7 @@ void sinkTaskMotionPlanner::Run() {
     nh_.shutdown();
 }
 
-void sinkTaskMotionPlanner::UpdateRealPosition(const geometry_msgs::Pose::ConstPtr& msg) {
+void tableTaskMotionPlanner::UpdateRealPosition(const geometry_msgs::Pose::ConstPtr& msg) {
 
 	msg_real_pose_ = *msg;
 
@@ -149,7 +149,7 @@ void sinkTaskMotionPlanner::UpdateRealPosition(const geometry_msgs::Pose::ConstP
 	real_pose_(2) = msg_real_pose_.position.z;
 }
 
-void sinkTaskMotionPlanner::UpdateDS1Velocity(const geometry_msgs::Twist::ConstPtr& msg) {
+void tableTaskMotionPlanner::UpdateDS1Velocity(const geometry_msgs::Twist::ConstPtr& msg) {
 
 	msg_ds1_twist_ = *msg;
 
@@ -159,7 +159,7 @@ void sinkTaskMotionPlanner::UpdateDS1Velocity(const geometry_msgs::Twist::ConstP
 
 }
 
-void sinkTaskMotionPlanner::UpdateDS2Velocity(const geometry_msgs::Twist::ConstPtr& msg) {
+void tableTaskMotionPlanner::UpdateDS2Velocity(const geometry_msgs::Twist::ConstPtr& msg) {
 
 	msg_ds2_twist_ = *msg;
 
@@ -170,7 +170,7 @@ void sinkTaskMotionPlanner::UpdateDS2Velocity(const geometry_msgs::Twist::ConstP
 
 
 /* This function does the planning logic for the task!! */
-void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
+void tableTaskMotionPlanner::ComputeDesiredVelocity() {
 
 	mutex_.lock();
 
@@ -253,7 +253,7 @@ void sinkTaskMotionPlanner::ComputeDesiredVelocity() {
 }
 
 
-void sinkTaskMotionPlanner::PublishDesiredVelocity() {
+void tableTaskMotionPlanner::PublishDesiredVelocity() {
     msg_desired_velocity_.angular.x = 0;
     msg_desired_velocity_.angular.y = 0;
     msg_desired_velocity_.angular.z = 0;
@@ -262,7 +262,7 @@ void sinkTaskMotionPlanner::PublishDesiredVelocity() {
 }
 
 
-void sinkTaskMotionPlanner::PublishDesiredPickingTarget(){
+void tableTaskMotionPlanner::PublishDesiredPickingTarget(){
 
     if(picks_ < num_picks_){
         msg_desired_pick_target_.x = targets_pick_[picks_](0);

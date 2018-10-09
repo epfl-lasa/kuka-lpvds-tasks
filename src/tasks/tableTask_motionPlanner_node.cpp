@@ -17,7 +17,7 @@
  */
 
 #include "ros/ros.h"
-#include "sinkTaskMotionPlanner.h"
+#include "tableTaskMotionPlanner.h"
 #include "lwr_ros_client/action_client_cmd_interface.h"
 #include <vector>
 
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     // return -1;
   }
 
-  sinkTaskMotionPlanner sinkTask_MotionPlanner_(nh, frequency,
+  tableTaskMotionPlanner tableTask_MotionPlanner_(nh, frequency,
                                          input_pose_topic_name,
                                          input_ds1_topic_name,
                                          input_ds2_topic_name,
@@ -92,10 +92,10 @@ int main(int argc, char **argv)
                                          attractor_sink,
                                          sim);
   
-  if (!sinkTask_MotionPlanner_.Init()) 
+  if (!tableTask_MotionPlanner_.Init()) 
     return -1;
   else 
-    sinkTask_MotionPlanner_.Run();
+    tableTask_MotionPlanner_.Run();
 
 
   /* Before closing the node, send robot to go_left joint command */

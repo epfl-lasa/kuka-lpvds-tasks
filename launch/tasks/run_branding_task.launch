@@ -5,7 +5,7 @@
 	<arg name="viz_DS_path"   default="true"/>
  	<arg name="sim"           default="false"/>
 
-   # Load SEDS motion generator for "Picking" in inspection task
+   # Load SEDS motion generator for "Picking" in branding task
 	<group ns="ds1">
 	    <param name="input_topic_name"                  value="/lwr/ee_pose"/>
 	    <param name="input_target_topic_name"           value="/ds1/desired_target"/>
@@ -31,7 +31,7 @@
 	</group>
 
 
-	# Load LPV-DS motion generator for "Sink" in inspection task
+	# Load LPV-DS motion generator for "Viapoint" in branding task
 	<group ns="ds2">
 	    <param name="input_topic_name"                  value="/lwr/ee_pose"/>
 	    <param name="output_topic_name"                 value=""/>
@@ -53,7 +53,7 @@
 	</group>
 
 
-	# Load Motion Planning node for Sink Task (Add simulation option)
+	# Load Motion Planning node for Table Task (Add simulation option)
 	<group>
 		  <param name="input_pose_topic_name"              value="/lwr/ee_pose"/>
 		  <param name="input_ds1_topic_name"               value="/ds1/desired_velocity_filtered"/>
@@ -62,7 +62,7 @@
 	      <param name="output_pick_topic_name"             value="/ds1/desired_target"/>
 	      <param name="sim"                                value="$(arg sim)"/>
 	      <rosparam command="load" file="$(find kuka_lpvds_tasks)/config/brandTask_x0.yml"/>
-		  <node name="sinkTask_motionPlanner_node" pkg="kuka_lpvds_tasks"  type="sinkTask_motionPlanner_node" output="screen"/>
+		  <node name="sinkTask_motionPlanner_node" pkg="kuka_lpvds_tasks"  type="tableTask_motionPlanner_node" output="screen"/>
 	</group>
 	
 	# This node published the desired orientation at the target

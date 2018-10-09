@@ -42,7 +42,7 @@ string_code_motion hashit (std::string const inString) {
 };
 
 
-class sinkTaskMotionPlanner {
+class tableTaskMotionPlanner {
 
 private:
 
@@ -97,7 +97,7 @@ private:
 
 
 public:
-	sinkTaskMotionPlanner(ros::NodeHandle &n,
+	tableTaskMotionPlanner(ros::NodeHandle &n,
 	                  double frequency,
 	                  std::string input_pose_topic_name,
                       std::string input_ds1_topic_name,
@@ -108,7 +108,7 @@ public:
                       std::vector<double> &attractor_sink,
                       bool sim);
 
-    ~sinkTaskMotionPlanner(void);
+    ~tableTaskMotionPlanner(void);
 
 	bool Init();
 

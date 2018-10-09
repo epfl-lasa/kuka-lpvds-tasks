@@ -3,15 +3,15 @@ This package implements the LPV-DS motion generator from [1] together with the p
 
 - Task 1: Inspection Line  
 <p align="center">
-<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/inspection-task.gif"  width="300"></>
+<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/inspection-exec.gif"  width="400"></>
 
 - Task 2: Branding Line
 <p align="center">
-<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/branding-task.gif" width="300"></>
+<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/branding-exec.gif" width="400"></>
 
 - Task 3: Shelf-Arranging (top only - for now)
 <p align="center">
-<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/shelf-task.gif" width="300"></>
+<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/shelf-exec.gif" width="400"></>
 
 Videos of the execution of these tasks on the real robot can be found here: [robot-experiments](http://lasa.epfl.ch/files/Nadia/Figueroa-CoRL2018-Experiments.mp4)
 

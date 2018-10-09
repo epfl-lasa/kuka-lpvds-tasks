@@ -79,8 +79,10 @@ To modify the gripper state during execution you can launch the gripper voice co
 roslaunch demo_voice_control gripper_voice_control.launch
 ```
 
-### Reference
+**References**   
 > [1] Figueroa, N. and Billard, A. (2018) "A Physically-Consistent Bayesian Non-Parametric Mixture Model for Dynamical System Learning". Conference on Robot Learning (CoRL) - 2018 Edition. To Appear. 
+
+**Contact**: [Nadia Figueroa](http://lasa.epfl.ch/people/member.php?SCIPER=238387) (nadia.figueroafernandez AT epfl dot ch)
 
 **Acknowledgments**
 This work was supported by the EU project [Cogimon](https://cogimon.eu/cognitive-interaction-motion-cogimon) H2020-ICT-23-2014.

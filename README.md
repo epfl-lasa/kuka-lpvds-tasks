@@ -3,15 +3,18 @@ This package implements the LPV-DS motion generator from [1] together with the p
 
 - Task 1: Inspection Line  
 <p align="center">
-<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/inspection-exec.gif"  width="400"></>
+<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/inspection-demo.gif"  width="350"></>
+  <img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/inspection-exec.gif"  width="350"></>
 
 - Task 2: Branding Line
 <p align="center">
-<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/branding-exec.gif" width="400"></>
+  <img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/branding-demo.gif"  width="350"></>   
+<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/branding-exec.gif" width="350"></>
 
 - Task 3: Shelf-Arranging (top only - for now)
 <p align="center">
-<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/shelf-exec.gif" width="400"></>
+  <img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/shelf-demo.gif" width="350"></>   
+<img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/shelf-exec.gif" width="350"></>
 
 Videos of the execution of these tasks on the real robot can be found here: [robot-experiments](http://lasa.epfl.ch/files/Nadia/Figueroa-CoRL2018-Experiments.mp4)
 

@@ -34,6 +34,8 @@
 	# Load LPV-DS motion generator for "Sink" in inspection task
 	<group ns="ds2">
 	    <param name="input_topic_name"                  value="/lwr/ee_pose"/>
+	    <param name="input_target_topic_name"           value="/ds2/desired_target"/>
+	    <param name="dynamic_target"                    value="true"/>
 	    <param name="output_topic_name"                 value=""/>
 	    <param name="output_filtered_topic_name"        value="/ds2/desired_velocity_filtered"/>
 	    <param name="publish_DS_path"                   value="false"/>
@@ -44,6 +46,8 @@
 	<group if="$(arg viz_DS_path)">
 	  <group ns="ds2_path">
 	      <param name="input_topic_name"                  value="/lwr/ee_pose"/>
+	      <param name="input_target_topic_name"           value="/ds2/desired_target"/>
+	      <param name="dynamic_target"                    value="true"/>
 	      <param name="output_topic_name"                 value=""/>
 	      <param name="output_filtered_topic_name"        value=""/>    
 	      <param name="publish_DS_path"                   value="true"/>

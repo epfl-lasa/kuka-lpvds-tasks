@@ -23,6 +23,7 @@ tableTaskMotionPlanner::tableTaskMotionPlanner(ros::NodeHandle &n,
                                            std::string input_pose_topic_name,
                                            std::string input_ds1_topic_name,
                                            std::string input_ds2_topic_name,
+                                           std::string input_target_topic_name,
                                            std::string output_vel_topic_name,
                                            std::string output_pick_topic_name,
                                            std::vector<double> &attractors_pick,
@@ -33,6 +34,7 @@ tableTaskMotionPlanner::tableTaskMotionPlanner(ros::NodeHandle &n,
 	  input_pose_topic_name_(input_pose_topic_name),
 	  input_ds1_topic_name_ (input_ds1_topic_name),
 	  input_ds2_topic_name_ (input_ds2_topic_name),
+      input_target_topic_name_(input_target_topic_name),
       output_vel_topic_name_ (output_vel_topic_name),
       output_pick_topic_name_ (output_pick_topic_name),
       attractors_pick_(attractors_pick),
@@ -54,10 +56,13 @@ bool tableTaskMotionPlanner::Init() {
     ds2_velocity_.resize(M_);     ds1_velocity_.setZero();
     desired_velocity_.resize(M_); desired_velocity_.setZero();
     target_sink_.resize(M_);      target_sink_.setZero();
+    learned_att_sink_.resize(M_); learned_att_sink_.setZero();
 
     /* Fill in target Vector for sink motion*/
-    for (unsigned int i=0;i < M_; i++)
+    for (unsigned int i=0;i < M_; i++){
+        learned_att_sink_(i) = attractor_sink_[i];
         target_sink_(i) = attractor_sink_[i];
+    }
 
     /* Fill in targets Vector* for sink motion*/
     num_picks_ = (int) attractors_pick_.size()/M_;
@@ -102,7 +107,7 @@ bool tableTaskMotionPlanner::InitializeROS() {
     sub_real_pose_              = nh_.subscribe( input_pose_topic_name_ , 1000, &tableTaskMotionPlanner::UpdateRealPosition, this, ros::TransportHints().reliable().tcpNoDelay());
     sub_ds1_twist_              = nh_.subscribe( input_ds1_topic_name_  , 1000, &tableTaskMotionPlanner::UpdateDS1Velocity, this, ros::TransportHints().reliable().tcpNoDelay());
     sub_ds2_twist_              = nh_.subscribe( input_ds2_topic_name_,   1000, &tableTaskMotionPlanner::UpdateDS2Velocity, this, ros::TransportHints().reliable().tcpNoDelay());
-
+    sub_desired_target_         = nh_.subscribe( input_target_topic_name_ , 1000, &tableTaskMotionPlanner::UpdateDynamicTarget, this, ros::TransportHints().reliable().tcpNoDelay());
 
 	/* Initialize publishers */
     pub_desired_twist_          = nh_.advertise<geometry_msgs::Twist>(output_vel_topic_name_, 1);    
@@ -169,6 +174,17 @@ void tableTaskMotionPlanner::UpdateDS2Velocity(const geometry_msgs::Twist::Const
 }
 
 
+void tableTaskMotionPlanner::UpdateDynamicTarget(const geometry_msgs::Point::ConstPtr& msg) {
+
+    msg_desired_target_ = *msg;
+    target_sink_(0) = msg_desired_target_.x;
+    target_sink_(1) = msg_desired_target_.y;
+    if (M_== 3)
+        target_sink_(2) = msg_desired_target_.z;
+}
+
+
+
 /* This function does the planning logic for the task!! */
 void tableTaskMotionPlanner::ComputeDesiredVelocity() {
 
@@ -215,7 +231,7 @@ void tableTaskMotionPlanner::ComputeDesiredVelocity() {
     case eSink:
         ROS_WARN_STREAM_THROTTLE(1, "Doing SINK motion");
         desired_velocity_ = ds2_velocity_;
-        pos_error_ = real_pose_ - target_sink_;
+        pos_error_ = real_pose_ - (target_sink_);
         target_error_ = pos_error_.squaredNorm();
         ROS_WARN_STREAM_THROTTLE(1, "Distance to SINK TARGET:" << target_error_);
 

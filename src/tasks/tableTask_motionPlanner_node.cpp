@@ -34,6 +34,7 @@ int main(int argc, char **argv)
   std::string          input_pose_topic_name;
   std::string          input_ds1_topic_name;
   std::string          input_ds2_topic_name;
+  std::string          input_target_topic_name;
   std::string          output_vel_topic_name;
   std::string          output_pick_topic_name;
   std::vector<double>  attractors_pick;
@@ -86,6 +87,7 @@ int main(int argc, char **argv)
                                          input_pose_topic_name,
                                          input_ds1_topic_name,
                                          input_ds2_topic_name,
+                                         input_target_topic_name,
                                          output_vel_topic_name,
                                          output_pick_topic_name,
                                          attractors_pick,

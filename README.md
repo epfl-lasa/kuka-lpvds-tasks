@@ -11,12 +11,15 @@ This package implements the LPV-DS motion generator from [1] together with the p
   <img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/branding-demo.gif"  width="350"></>   
 <img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/branding-exec.gif" width="350"></>
 
-- Task 3: Shelf-Arranging (top only - for now)
+- Task 3: Shelf-Arranging (top only)
 <p align="center">
   <img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/shelf-demo.gif" width="350"></>   
 <img src="https://github.com/epfl-lasa/kuka-lpvds-tasks/blob/master/img/shelf-exec.gif" width="350"></>
 
 Videos of the execution of these tasks on the real robot can be found here: [robot-experiments](http://lasa.epfl.ch/files/Nadia/Figueroa-CoRL2018-Experiments.mp4)
+
+- Task 4: Letter Writing (from LASA-Dataset)
+
 
 ### Dependencies
 To run this package you must install the following dependencies:

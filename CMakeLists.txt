@@ -50,6 +50,7 @@ include_directories(include include/tasks ${catkin_INCLUDE_DIRS})
 add_library(${PROJECT_NAME} ${SRC_DIR}/planning/simple_actions/linear_cart_action.cpp
                             ${INCLUDE_DIR}/planning/simple_actions/linear_cart_action.h
                             ${SRC_DIR}/tasks/motion_planners/tableTaskMotionPlanner.cpp
+                            ${SRC_DIR}/tasks/motion_planners/writingTaskMotionPlanner.cpp
                             ${SRC_DIR}/tasks/motion_planners/shelfTaskMotionPlanner.cpp
                             ${INCLUDE_DIR}/tasks/shelfTaskMotionPlanner.h)
 
@@ -69,3 +70,8 @@ target_link_libraries(tableTask_motionPlanner_node ${PROJECT_NAME} ${catkin_LIBR
 ############ For DS motion planning node for shelf task
 add_executable(shelfTask_motionPlanner_node ${SRC_DIR}/tasks/shelfTask_motionPlanner_node.cpp)
 target_link_libraries(shelfTask_motionPlanner_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+
+############ For DS motion planning node for writing tasks
+add_executable(writingTask_motionPlanner_node ${SRC_DIR}/tasks/writingTask_motionPlanner_node.cpp)
+target_link_libraries(writingTask_motionPlanner_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+

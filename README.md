@@ -43,11 +43,11 @@ These commands are use to send the robot to a "good" initial joint configuration
   ```
   $ roslaunch kuka_lpvds_tasks run_inspection_task.launch sim:=true
   ```
-- For Inspection Line Task
+- For Branding Line Task
   ```
   $ roslaunch kuka_lpvds_tasks run_branding_task.launch sim:=true
   ```
-- For Inspection Line Task
+- For Shelf Arranging Task
   ```
   $ roslaunch kuka_lpvds_tasks run_shelf_task.launch sim:=true
   ```

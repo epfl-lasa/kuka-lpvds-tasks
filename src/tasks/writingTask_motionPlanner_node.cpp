@@ -39,7 +39,7 @@ int main(int argc, char **argv)
   std::string          output_pick_topic_name;
   std::string          output_write_topic_name;
   std::vector<double>  attractors_pick;
-  std::vector<double>  attractor_sink;
+  std::vector<double>  attractor_write;
   bool                 sim(false);
   
 
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     // return -1;
   }
 
-  if (!nh.getParam("attractor_sink", attractor_sink))   {
+  if (!nh.getParam("attractor_write", attractor_write))   {
     ROS_ERROR("Couldn't retrieve the topic name for the output. ");
     // return -1;
   }
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
                                          output_pick_topic_name,
                                          output_write_topic_name,
                                          attractors_pick,
-                                         attractor_sink,
+                                         attractor_write,
                                          sim);
   
   if (!writingTask_MotionPlanner_.Init()) 

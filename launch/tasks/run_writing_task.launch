@@ -6,6 +6,11 @@
  	<arg name="sim"           default="false"/>
  	<arg name="letter"        default="Angle"/>
 
+	# Options for letters:
+	# - Angle
+	# - C
+	# - Khamesh 	
+
    # Load SEDS motion generator for "Approaching" in writing task
 	<group ns="ds1">
 	    <param name="input_topic_name"                  value="/lwr/ee_pose"/>
@@ -40,7 +45,7 @@
 	    <param name="output_topic_name"                 value=""/>
 	    <param name="output_filtered_topic_name"        value="/ds2/desired_velocity_filtered"/>
 	    <param name="publish_DS_path"                   value="false"/>
-	    <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/KUKA-AngleShape.yml"/>
+	    <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/KUKA-$(arg letter)Shape.yml"/>
 	    <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" />
 	</group>
 
@@ -52,7 +57,7 @@
 	      <param name="output_topic_name"                 value=""/>
 	      <param name="output_filtered_topic_name"        value=""/>    
 	      <param name="publish_DS_path"                   value="true"/>
-	      <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/KUKA-AngleShape.yml"/>
+	      <rosparam command="load" file="$(find ds_motion_generator)/config/learned_DS/lpvDS/KUKA-$(arg letter)Shape.yml"/>
 	      <node name="lpvDS_node" pkg="ds_motion_generator"  type="lpvDS_motionGenerator_node" />
 	  </group>
 	</group>
@@ -67,7 +72,7 @@
 	      <param name="output_pick_topic_name"             value="/ds1/desired_target"/>
 	      <param name="output_write_topic_name"             value="/ds2/desired_target"/>
 	      <param name="sim"                                value="$(arg sim)"/>
-	      <rosparam command="load" file="$(find kuka_lpvds_tasks)/config/writingTask.yml"/>
+	      <rosparam command="load" file="$(find kuka_lpvds_tasks)/config/writingTask-$(arg letter)Shape.yml"/>
 		  <node name="writingTask_motionPlanner_node" pkg="kuka_lpvds_tasks"  type="writingTask_motionPlanner_node" output="screen"/>
 	</group>
 	

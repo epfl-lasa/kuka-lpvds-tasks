@@ -230,7 +230,7 @@ void writingTaskMotionPlanner::ComputeDesiredVelocity() {
         desired_velocity_ = ds2_velocity_;
 
         /* Artificial Z-velocity to adapt height */
-        desired_velocity_(2) = -0.5 * (real_pose_(2) - target_write_(2));
+        desired_velocity_(2) = -0.75 * (real_pose_(2) - target_write_(2));
 
         pos_error_ = real_pose_ - (target_write_);
         target_error_ = pos_error_.squaredNorm();

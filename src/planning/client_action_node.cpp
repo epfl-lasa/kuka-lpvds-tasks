@@ -91,11 +91,16 @@ int main(int argc, char** argv)
       std::array<double,7> des_position;
     
       ac::Joint_action joint_go_right(nh);      
-//      des_position  =  {{-0.838, 0.614, 0.388, -1.072, -0.1988, 1.478, -0.606}};
       des_position  =  {{-1.323, 0.797, 0.990, -1.423, -0.464, 1.469, -0.0944}};
       joint_go_right.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
       joint_go_right.debug_print = true;
       actions["go_right"] = &joint_go_right;
+
+      ac::Joint_action joint_go_write(nh);
+      des_position  =  {{-2.223, 0.597, 0.990, -1.423, -0.464, 1.469, -0.0944}};
+      joint_go_write.set_joint_values(des_position,ac::Joint_action::MESSAGE_TYPE::JOINT_POSITION);
+      joint_go_write.debug_print = true;
+      actions["go_write"] = &joint_go_write;
       
       ac::Joint_action joint_go_left(nh);   
       des_position  =  {{0.570, 0.693, 0.265, -0.784, -0.257, 1.557, 0.768}};

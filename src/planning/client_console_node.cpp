@@ -29,6 +29,7 @@ int main(int argc, char** argv)
 
     client_console.AddConsoleCommand("go_home");
     client_console.AddConsoleCommand("go_right");
+    client_console.AddConsoleCommand("go_write");
     client_console.AddConsoleCommand("go_left");
     client_console.AddConsoleCommand("go_candle");
     client_console.AddConsoleCommand("go_center");

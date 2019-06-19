@@ -33,12 +33,12 @@ using namespace Eigen;
 
 enum string_code_motion {
     ePick,
-    eSink,
+    eWrite,
 };
 
 string_code_motion hashit_write (std::string const inString) {
     if (inString == "pick") return ePick;
-    if (inString == "sink") return eSink;
+    if (inString == "write") return eWrite;
 }
 
 class writingTaskMotionPlanner {
@@ -86,10 +86,10 @@ private:
     VectorXd                  ds2_velocity_;
     VectorXd                  desired_velocity_;
     std::vector<double>       attractors_pick_;
-    std::vector<double>       attractor_sink_;
+    std::vector<double>       attractor_write_;
     VectorXd                  *targets_pick_;
-    VectorXd                  target_sink_;
-    VectorXd                  learned_att_sink_;
+    VectorXd                  target_write_;
+    VectorXd                  learned_att_write_;
     bool                      bFirst_;
     bool                      bEnd_;
     int                       num_picks_;

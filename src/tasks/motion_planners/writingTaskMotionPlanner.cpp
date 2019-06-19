@@ -28,7 +28,7 @@ writingTaskMotionPlanner::writingTaskMotionPlanner(ros::NodeHandle &n,
                                            std::string output_pick_topic_name,
                                            std::string output_write_topic_name,
                                            std::vector<double> &attractors_pick,
-                                           std::vector<double> &attractor_sink,
+                                           std::vector<double> &attractor_write,
                                            bool sim)
 	: nh_(n),
 	  loop_rate_(frequency),
@@ -40,11 +40,11 @@ writingTaskMotionPlanner::writingTaskMotionPlanner(ros::NodeHandle &n,
       output_pick_topic_name_ (output_pick_topic_name),
       output_write_topic_name_ (output_write_topic_name),
       attractors_pick_(attractors_pick),
-      attractor_sink_(attractor_sink),
+      attractor_write_(attractor_write),
       thres_(1e-3),
       M_(3), sim_(sim){
 
-	ROS_INFO_STREAM("Sink-Task Motion Planning node is created at: " << nh_.getNamespace() << " with freq: " << frequency << "Hz");
+    ROS_INFO_STREAM("Writing-Task Motion Planning node is created at: " << nh_.getNamespace() << " with freq: " << frequency << "Hz");
 }
 
 writingTaskMotionPlanner::~writingTaskMotionPlanner(){
@@ -57,13 +57,13 @@ bool writingTaskMotionPlanner::Init() {
     ds1_velocity_.resize(M_);     ds1_velocity_.setZero();
     ds2_velocity_.resize(M_);     ds1_velocity_.setZero();
     desired_velocity_.resize(M_); desired_velocity_.setZero();
-    target_sink_.resize(M_);      target_sink_.setZero();
-    learned_att_sink_.resize(M_); learned_att_sink_.setZero();
+    target_write_.resize(M_);      target_write_.setZero();
+    learned_att_write_.resize(M_); learned_att_write_.setZero();
 
     /* Fill in target Vector for sink motion*/
     for (unsigned int i=0;i < M_; i++){
-        learned_att_sink_(i) = attractor_sink_[i];
-        target_sink_(i) = attractor_sink_[i];
+        learned_att_write_(i) = attractor_write_[i];
+        target_write_(i) = attractor_write_[i];
     }
 
     /* Fill in targets Vector* for sink motion*/
@@ -118,7 +118,7 @@ bool writingTaskMotionPlanner::InitializeROS() {
 
     if (nh_.ok()) {
 		ros::spinOnce();
-		ROS_INFO("The Sink Task planner is ready.");
+		ROS_INFO("The Writing Task planner is ready.");
 		return true;
 	}
 	else {
@@ -181,10 +181,10 @@ void writingTaskMotionPlanner::UpdateDS2Velocity(const geometry_msgs::Twist::Con
 void writingTaskMotionPlanner::UpdateDynamicTarget(const geometry_msgs::Point::ConstPtr& msg) {
 
     msg_desired_target_ = *msg;
-    target_sink_(0) = msg_desired_target_.x;
-    target_sink_(1) = msg_desired_target_.y;
+    target_write_(0) = msg_desired_target_.x;
+    target_write_(1) = msg_desired_target_.y;
     if (M_== 3)
-        target_sink_(2) = msg_desired_target_.z;
+        target_write_(2) = msg_desired_target_.z;
 }
 
 
@@ -211,13 +211,13 @@ void writingTaskMotionPlanner::ComputeDesiredVelocity() {
             target_error_ = pos_error_.squaredNorm();
             ROS_WARN_STREAM_THROTTLE(1, "Distance to PICKING TARGET" << picks_ << ": " << target_error_);
 
-            /* Check if robot has reached target and swicth to next motion*/
+            /* Check if robot has reached target and switch to next motion*/
             if (target_error_ < thres_){
-                ROS_WARN_STREAM_THROTTLE(1, "PICKING TARGET REACHED!!!!.. switching to sink!");
+                ROS_WARN_STREAM_THROTTLE(1, "PICKING TARGET REACHED!!!!.. switching to write motion!");
 
 
-                /*Switch to eSink*/
-                motion_phase_name_ = "sink";
+                /*Switch to eWrite*/
+                motion_phase_name_ = "write";
 
                 /* Reset initial task boolean */
                 if (bFirst_)
@@ -225,13 +225,14 @@ void writingTaskMotionPlanner::ComputeDesiredVelocity() {
             }
             break;
 
-    case eSink:
+    case eWrite:
         ROS_WARN_STREAM_THROTTLE(1, "Doing Writing motion");
         desired_velocity_ = ds2_velocity_;
-        /* Artificial Z-velocity to adapt height */
-        desired_velocity_(2) = -0.5 * (real_pose_(2) - target_sink_(2));
 
-        pos_error_ = real_pose_ - (target_sink_);
+        /* Artificial Z-velocity to adapt height */
+        desired_velocity_(2) = -0.5 * (real_pose_(2) - target_write_(2));
+
+        pos_error_ = real_pose_ - (target_write_);
         target_error_ = pos_error_.squaredNorm();
         ROS_WARN_STREAM_THROTTLE(1, "Distance to Writing TARGET:" << target_error_);
 
@@ -239,7 +240,7 @@ void writingTaskMotionPlanner::ComputeDesiredVelocity() {
         if (target_error_ < thres_){
             ROS_WARN_STREAM_THROTTLE(1, "Writing TARGET REACHED!!!!.. switching to pick!");
 
-            /*Switch to eSink*/
+            /*Switch to eWrite*/
             motion_phase_name_ = "pick";
             picks_ = picks_ + 1;
 
@@ -283,8 +284,8 @@ void writingTaskMotionPlanner::PublishDesiredPickingTarget(){
 
 void writingTaskMotionPlanner::PublishDesiredWritingTarget(){
 
-        msg_desired_write_target_.x = target_sink_(0);
-        msg_desired_write_target_.y = target_sink_(1);
-        msg_desired_write_target_.z = target_sink_(2);
+        msg_desired_write_target_.x = target_write_(0);
+        msg_desired_write_target_.y = target_write_(1);
+        msg_desired_write_target_.z = target_write_(2);
         pub_desired_write_target_.publish(msg_desired_write_target_);
 }

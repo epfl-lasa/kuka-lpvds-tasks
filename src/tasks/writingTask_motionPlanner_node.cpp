@@ -110,7 +110,7 @@ int main(int argc, char **argv)
   /* Before closing the node, send robot to go_home joint command */
   lwr_ros_client::String_cmd joint_srv;
 
-  joint_srv.request.cmd = "go_right";
+  joint_srv.request.cmd = "go_write";
   joint_cmd_client.call(joint_srv);
 
   ros::shutdown();
